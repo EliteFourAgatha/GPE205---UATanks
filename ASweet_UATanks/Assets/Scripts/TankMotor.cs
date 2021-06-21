@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//RequireComponent tells Unity that a TankData component needs to be added
+//  to any game object this script is attached to
+[RequireComponent (typeof(TankData))]
 public class TankMotor : MonoBehaviour
 {
     //Store transform in a variable.
@@ -10,19 +13,20 @@ public class TankMotor : MonoBehaviour
     //Character Controller reference
     private CharacterController characterController;
     public TankData tankData;
+
     public void Awake()
     {
         tfRef = gameObject.GetComponent<Transform>();
     }
     public void Start()
     {
+        //If tank data isn't set in inspector, set it with GetComponent
+        if(tankData == null)
+        {
+            tankData = gameObject.GetComponent<TankData>();
+        }
         characterController = gameObject.GetComponent<CharacterController>();
     }
-    public void Update()
-    {
-
-    }
-
     //Passing float speed, negative value is backwards
     public void MoveTank(float speed)
     {
@@ -37,8 +41,7 @@ public class TankMotor : MonoBehaviour
         //  frames per second automatically
         characterController.SimpleMove(speedVector);
     }
-    //Passing float speed for speed of rotation. 
-    // In reality, this is the euler degree angle you want to rotate
+    //Passing float speed for speed of rotation.
     public void RotateTank(float speed)
     {
         //Vector3 to hold rotation value in euler angles
@@ -55,8 +58,5 @@ public class TankMotor : MonoBehaviour
         //Call rotate, and use Space.self to rotate in relation to the object itself,
         //  instead of to the scene, which would be Space.world
         tfRef.Rotate(rotateVector, Space.Self);
-
-
-
     }
 }
