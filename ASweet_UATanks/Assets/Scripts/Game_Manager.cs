@@ -6,6 +6,13 @@ public class Game_Manager : MonoBehaviour
 {
     //Static variable (same across all class instances)
     public static Game_Manager GMInstance;
+    public TankData playerTankData;
+    public TankData aiOneTankData;
+    public TankData aiTwoTankData;
+    public TankData aiThreeTankData;
+    public TankData aiFourTankData;
+    public TankShoot playerShootRef;
+    public bool playerFiredShellRef = false;
     //Awake is called when object is first created, before start calls
     public void Awake()
     {
@@ -21,5 +28,9 @@ public class Game_Manager : MonoBehaviour
             Debug.LogError("Error: Only one instance of GameManager can exist");
             Destroy(gameObject);
         }
+    }
+    public void Update()
+    {
+        playerFiredShellRef = playerShootRef.playerFiredShell;
     }
 }

@@ -12,6 +12,7 @@ public class TankShoot : MonoBehaviour
     public Transform firePointTF;
     //Audio source for tank blast SFX
     public AudioSource audioSource;
+    public bool playerFiredShell = false;
     public TankData data;
     //Float timer to keep track of Time.time when shell is fired
     private float fireTimer;
@@ -57,6 +58,17 @@ public class TankShoot : MonoBehaviour
         audioSource.Play();
         //Set bool to false when shell is fired. Set to true once reload timer is up
         canFire = false;
+        //Tells AI that player just called FireShell(). Can add other tags here for
+        //  multiplayer (multiple players to check)
+        if(gameObject.tag == "PlayerTank")
+        {
+            playerFiredShell = true;
+            StartCoroutine(DisableFiredShellBool());
+        }
     }
-
+    IEnumerator DisableFiredShellBool()
+    {
+        yield return new WaitForSeconds(2f);
+        playerFiredShell = false;
+    }
 }

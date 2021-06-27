@@ -8,8 +8,8 @@ using UnityEngine;
 public class TankHealth : MonoBehaviour
 {
     //Floats for max and current health to determine if tank should be destroyed on collision
-    private float maxHealth;
-    private float currentHealth;
+    public float maxHealth;
+    public float currentHealth;
     private float damageValue;
     public TankData tankData;
     public bool canTakeDamage;

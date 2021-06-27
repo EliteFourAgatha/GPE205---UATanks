@@ -13,6 +13,10 @@ public class TankMotor : MonoBehaviour
     //Character Controller reference
     private CharacterController characterController;
     public TankData tankData;
+    //Starting waypoint in WaypointArray
+    private int currentWaypoint = 0;
+    //Float to check if tank is close enough to waypoint
+    public float closeEnoughToWaypoint = 1f;
 
     public void Awake()
     {
@@ -26,6 +30,10 @@ public class TankMotor : MonoBehaviour
             tankData = gameObject.GetComponent<TankData>();
         }
         characterController = gameObject.GetComponent<CharacterController>();
+    }
+    private void Update() 
+    {
+        //if(RotateTowards)
     }
     //Passing float speed, negative value is backwards
     public void MoveTank(float speed)
@@ -58,5 +66,32 @@ public class TankMotor : MonoBehaviour
         //Call rotate, and use Space.self to rotate in relation to the object itself,
         //  instead of to the scene, which would be Space.world
         tfRef.Rotate(rotateVector, Space.Self);
+    }
+    //Rotates towards target waypoint.
+    //if can rotate, true. if not, (already facing target), false)
+    public bool RotateTowardsWP(Vector3 targetWP, float speed)
+    {
+        Vector3 vectorToNextWP;
+        //The vector to next waypoint is the difference (subtraction) between
+        // the two points, starting at target
+        vectorToNextWP = targetWP - tfRef.position;
+        //Find quaternion that looks down that vector
+        // Quaternions are math objects that tell how to rotate an object
+        Quaternion targetRotation = Quaternion.LookRotation(vectorToNextWP);
+        //If not currently
+        if (targetRotation != tfRef.rotation)
+        {
+            //Use RotateTowards "from" current transform rotation "to" target transform rotation.
+            //  data.turnSpeed = degree speed turned per sec
+            //    Time.deltaTime used to change to "degrees per sec" instead of "degrees per frame"
+            tfRef.rotation = Quaternion.RotateTowards(tfRef.rotation, targetRotation, tankData.turnSpeed * Time.deltaTime);
+            //Rotated, so return true
+            return true;
+        }
+        //Already facing that direction, return false
+        else
+        {
+            return false;
+        }
     }
 }

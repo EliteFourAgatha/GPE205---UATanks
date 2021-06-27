@@ -8,6 +8,12 @@ public class TankData : MonoBehaviour
     public float moveSpeed = 3f;
     //Euler angle value for RotateTank in degrees/second
     public float turnSpeed = 180f;
+    //Float value for AIController RunFleeMode() distance
+    public float fleeDistance = 5f;
+    //Float value for distance in front of tank to aim at for AI Hunt mode
+    public float huntDistance = 2f;
+    //Float value for AIController Coward distance
+    public float cowardFleeTimer = 3f;
     //Float value for TankShoot.FireShell() shell speed
     public float shellSpeed = 50f;
     //Float value for time to reload Armor.ActivateArmor(), in seconds
@@ -16,6 +22,10 @@ public class TankData : MonoBehaviour
     public float armorDurationTime = 3f;
     //Float value for time to reload TankShoot.FireShell(), in seconds
     public float shootReloadTimer = 2f;
+    //Float value for time for enemy to reload TankShoot.Fireshell(), in seconds
+    public float enemyReloadTimer = 3f;
+    //Float value for time for hunter AI to reload TankShoot.FireShell(), in seconds
+    public float enemyHuntReloadTimer = 1f;
     //TankShoot.FireShell() timeout period, in seconds
     public float timeoutTimer = 5f;
     //TankShoot.FireShell() Player damage value

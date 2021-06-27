@@ -36,15 +36,21 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AICoward.cs" />
      <Compile Include="Assets\Scripts\ShellScript.cs" />
+     <Compile Include="Assets\Scripts\AIController.cs" />
      <Compile Include="Assets\Scripts\Game_Manager.cs" />
+     <Compile Include="Assets\Scripts\TankHealth.cs" />
      <Compile Include="Assets\Scripts\TankShoot.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
+     <Compile Include="Assets\Scripts\SampleAI3.cs" />
      <Compile Include="Assets\Scripts\TankMotor.cs" />
-     <Compile Include="Assets\Scripts\TankData.cs" />
-     <Compile Include="Assets\Scripts\TankHealth.cs" />
-     <Compile Include="Assets\Scripts\AIController.cs" />
      <Compile Include="Assets\Scripts\Armor.cs" />
+     <Compile Include="Assets\Scripts\SampleAI2.cs" />
+     <Compile Include="Assets\Scripts\SampleAI.cs" />
+     <Compile Include="Assets\Scripts\TankData.cs" />
+     <Compile Include="Assets\Scripts\AIHunter.cs" />
+     <Compile Include="Assets\Scripts\AIPatrol.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
