@@ -411,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tankData: {fileID: 1213816595}
+  closeEnoughToWaypoint: 1
 --- !u!114 &1213816593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,16 +442,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  aiPatrolMoveSpeed: 2
   turnSpeed: 150
+  fleeDistance: 5
+  huntDistance: 1
+  cowardFleeTimer: 3
   shellSpeed: 50
   armorResetTimer: 10
   armorDurationTime: 3
   shootReloadTimer: 2
+  enemyReloadTimer: 3
+  enemyHuntReloadTimer: 1
+  enemyBombReloadTimer: 5
   timeoutTimer: 5
   playerShellDamage: 5
   enemyShellDamage: 3
-  playerMaxHealth: 15
-  enemyMaxHealth: 10
+  playerMaxHealth: 30
+  enemyMaxHealth: 25
 --- !u!114 &1213816596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,8 +473,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePointTF: {fileID: 4280372176804998972}
   audioSource: {fileID: 7590474506862702652}
+  bombDropSFX: {fileID: 8300000, guid: 9ed4cbc5aca9eca4f81bd2cdaf80f8ca, type: 3}
+  tankBlastSFX: {fileID: 8300000, guid: 9d785171eeed6fb449acafc93b16f4b7, type: 3}
+  playerFiredShell: 0
   data: {fileID: 0}
   shellRound: {fileID: 2536531783945624043, guid: 1872017d82f01534c95a8705a788f67e, type: 3}
+  bombRound: {fileID: 7823021716380361886, guid: ae8463e3e6a296e478e0bd58991454b0, type: 3}
   canFire: 0
 --- !u!82 &7590474506862702652
 AudioSource:
@@ -576,6 +588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdce76bc555d3948baa4a79294f1231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
   tankData: {fileID: 1213816595}
   canTakeDamage: 0
 --- !u!114 &950198423

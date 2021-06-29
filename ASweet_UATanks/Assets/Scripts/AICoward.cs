@@ -16,6 +16,7 @@ public class AICoward : MonoBehaviour
     public TankMotor motor;
     public TankHealth health;
     public TankShoot shoot;
+    public Armor armor;
     public Game_Manager gameManager;
     private int avoidanceStage = 0;
     public float avoidanceTime = 2f;
@@ -26,7 +27,8 @@ public class AICoward : MonoBehaviour
     public AIState aiState = AIState.chase;
     public float stateEnterTime;
     public float aiSenseRadius = 10f;
-    public float cowardRadius = 5f;
+    public float cowardRadius = 7f;
+    public float tooCloseRadius = 3f;
     private float lastShootTime;
     public float restHealRate = 1f;
     private float cowardTimer;
@@ -49,10 +51,13 @@ public class AICoward : MonoBehaviour
         {
             shoot = gameObject.GetComponent<TankShoot>();
         }
+        if(armor == null)
+        {
+            armor = gameObject.GetComponent<Armor>();
+        }
     }
     void Update()
     {
-        //CheckForCowardEscape();
         if(aiState == AIState.chase)
         {
             //Do behaviors
@@ -71,7 +76,6 @@ public class AICoward : MonoBehaviour
             }
             else if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
             {
-                Debug.Log("chase -> chase+shoot");
                 ChangeState(AIState.chaseandshoot);
             }
             else
@@ -104,8 +108,11 @@ public class AICoward : MonoBehaviour
             }
             else if(Vector3.Distance(tfRef.position, target.position) > aiSenseRadius)
             {
-                Debug.Log("chase+fire -> chase");
                 ChangeState(AIState.chase);
+            }
+            else if(Vector3.Distance(tfRef.position, target.position) <= tooCloseRadius)
+            {
+                ChangeState(AIState.flee);
             }
             else
             {
@@ -128,6 +135,14 @@ public class AICoward : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
+            //If fleeing and outside range, and health >= maxHealth * 0.5, chase again
+            if(Vector3.Distance(target.position, tfRef.position) >= aiSenseRadius)
+            {
+                if(health.currentHealth >= (health.maxHealth * 0.5f))
+                {
+                    ChangeState(AIState.chase);
+                }
+            }
         }
         else if(aiState == AIState.checkflee)
         {
@@ -146,17 +161,19 @@ public class AICoward : MonoBehaviour
         else if(aiState == AIState.rest)
         {
             //Do behaviors
-            Debug.Log("Rest enabled");
             DoRest();
             //Check for transitions
             if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
             {
-                Debug.Log("Rest -> flee");
                 ChangeState(AIState.flee);
             }
             else if(health.currentHealth >= health.maxHealth)
             {
                 ChangeState(AIState.chase);
+            }
+            else
+            {
+                CheckForCowardEscape();
             }
         }
         else if(aiState == AIState.coward)
@@ -167,7 +184,6 @@ public class AICoward : MonoBehaviour
             //If coward timer is up, resume chasing
             if(Time.time - cowardTimer > data.cowardFleeTimer)
             {
-                Debug.Log("coward -> chase");
                 ChangeState(AIState.chase);
             }
         }
@@ -259,27 +275,16 @@ public class AICoward : MonoBehaviour
     }
     public void DoRest()
     {
-        //if (health.currentHealth == health.maxHealth)
-        //{
-        //    needsHealing = false;
-        //}
-        //while(needsHealing)
-        //{
-            //if(Time.time > nextHealTime)
-            //{
-                //Debug.Log("increment health!" + health.currentHealth);
-                //Increment heal time by (tickPeriod) value
-                //nextHealTime = Time.time + tickPeriod;
-                //StartCoroutine(DoHealingTick());
-
-                //Increase current health by (restHealRate per second)
-                //health.currentHealth += (restHealRate * Time.deltaTime);
-
-                //Make sure we never go over max health
-                //health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);
-            //}
-        //}
-        
+        if(armor.canUseArmor)
+        {
+            armor.ActivateArmor();
+        }
+        //Make sure we never go over max health
+        if(health.currentHealth < health.maxHealth)
+        {
+            //Increase current health by (restHealRate per second)
+            health.currentHealth += (restHealRate * Time.deltaTime);
+        }
     }
     public void DoFlee()
     {

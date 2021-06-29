@@ -125,4 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e575f5f72b8ac947bfab65bd8c2899f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTimer: 3
+  roundExplodeVFX: {fileID: 6158359463099850962, guid: 02ceb220de7fed940a985e4e4709133f, type: 3}

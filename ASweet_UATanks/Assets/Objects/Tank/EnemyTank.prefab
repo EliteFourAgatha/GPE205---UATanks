@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 3267397776042247633}
   - component: {fileID: 2359024057204659089}
   - component: {fileID: 3267397776042247634}
+  - component: {fileID: 6818755859276873566}
   m_Layer: 0
   m_Name: EnemyTank
   m_TagString: EnemyTank
@@ -411,6 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tankData: {fileID: 8356770664500241203}
+  closeEnoughToWaypoint: 1
 --- !u!114 &8356770664500241203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,15 +426,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  aiPatrolMoveSpeed: 2
   turnSpeed: 180
+  fleeDistance: 5
+  huntDistance: 1
+  cowardFleeTimer: 3
   shellSpeed: 50
   armorResetTimer: 10
+  armorDurationTime: 3
   shootReloadTimer: 2
+  enemyReloadTimer: 3
+  enemyHuntReloadTimer: 1
   timeoutTimer: 5
   playerShellDamage: 5
   enemyShellDamage: 3
-  playerMaxHealth: 15
-  enemyMaxHealth: 10
+  playerMaxHealth: 30
+  enemyMaxHealth: 25
 --- !u!114 &8356770664500241204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePointTF: {fileID: 5233140392425493276}
   audioSource: {fileID: 2841093873194903221}
+  playerFiredShell: 0
   data: {fileID: 0}
   shellRound: {fileID: 2536531783945624043, guid: 1872017d82f01534c95a8705a788f67e, type: 3}
   canFire: 0
@@ -558,6 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdce76bc555d3948baa4a79294f1231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
   tankData: {fileID: 8356770664500241203}
   canTakeDamage: 0
 --- !u!114 &2359024057204659089
@@ -588,6 +600,31 @@ MonoBehaviour:
   tankHealth: {fileID: 3267397776042247633}
   tankArmor: {fileID: 5059210790201820472}
   canUseArmor: 0
+--- !u!114 &6818755859276873566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8356770665435101836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd2f5b97ae8feb4a8aef9ad215fb39c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  data: {fileID: 0}
+  motor: {fileID: 0}
+  health: {fileID: 0}
+  shoot: {fileID: 0}
+  gameManager: {fileID: 0}
+  avoidanceTime: 2
+  aiState: 0
+  stateEnterTime: 0
+  aiSenseRadius: 10
+  cowardRadius: 5
+  tooCloseRadius: 2
+  restHealRate: 1
 --- !u!1 &8356770665435101838
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,7 +651,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8356770665435101838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.059}
   m_LocalScale: {x: 1, y: 0.25, z: 1}
   m_Children: []
   m_Father: {fileID: 8356770665435391652}

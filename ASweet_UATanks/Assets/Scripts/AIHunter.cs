@@ -16,6 +16,7 @@ public class AIHunter : MonoBehaviour
     public TankMotor motor;
     public TankHealth health;
     public TankShoot shoot;
+    public Armor armor;
     public Game_Manager gameManager;
     private int avoidanceStage = 0;
     public float avoidanceTime = 2f;
@@ -25,8 +26,9 @@ public class AIHunter : MonoBehaviour
     public enum AIState{hunt, chase, checkflee, flee, rest};
     public AIState aiState = AIState.chase;
     public float stateEnterTime;
-    public float aiSenseRadius = 8f;
-    public float huntRadius = 5f;
+    public float aiSenseRadius = 10f;
+    public float huntRadius = 7f;
+    public float tooCloseRadius = 3f;
     private float lastShootTime;
     public float restHealRate = 1f;
     void Start()
@@ -47,6 +49,10 @@ public class AIHunter : MonoBehaviour
         if(shoot == null)
         {
             shoot = gameObject.GetComponent<TankShoot>();
+        }
+        if(armor == null)
+        {
+            armor = gameObject.GetComponent<Armor>();
         }
     }
     void Update()
@@ -70,9 +76,8 @@ public class AIHunter : MonoBehaviour
             //If within senseRadius but outside of huntRadius, enable hunt mode
             else if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
             {
-                if(Vector3.Distance(tfRef.position, target.position) >= huntRadius)
+                if(Vector3.Distance(tfRef.position, target.position) <= huntRadius)
                 {
-                    Debug.Log("chase -> hunt");
                     ChangeState(AIState.hunt);
                 }
             }
@@ -86,11 +91,11 @@ public class AIHunter : MonoBehaviour
             }
             else
             {
-                //Get target to shoot at (data.huntDistance) units ahead of player's position
-                Vector3 huntTarget = target.position + (target.forward * data.huntDistance);
+                //Shoot at target's current position
+                Vector3 huntTarget = target.position;
                 motor.RotateTowardsWP(huntTarget, data.turnSpeed);
                 //Limit fire rate by (data.enemyHuntReloadTimer) seconds
-                if(Time.time > lastShootTime + data.enemyReloadTimer)
+                if(Time.time > lastShootTime + data.enemyHuntReloadTimer)
                 {
                     shoot.FireShell();
                     lastShootTime = Time.time;
@@ -101,9 +106,12 @@ public class AIHunter : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
+            else if(Vector3.Distance(tfRef.position, target.position) <= tooCloseRadius)
+            {
+                ChangeState(AIState.flee);
+            }
             else if(Vector3.Distance(tfRef.position, target.position) > aiSenseRadius)
             {
-                Debug.Log("hunt -> chase");
                 ChangeState(AIState.chase);
             }
         }
@@ -123,6 +131,14 @@ public class AIHunter : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
+            //If fleeing and outside range, and health >= maxHealth * 0.5, chase again
+            if(Vector3.Distance(target.position, tfRef.position) >= aiSenseRadius)
+            {
+                if(health.currentHealth >= (health.maxHealth * 0.5f))
+                {
+                    ChangeState(AIState.chase);
+                }
+            }
         }
         else if(aiState == AIState.checkflee)
         {
@@ -141,12 +157,10 @@ public class AIHunter : MonoBehaviour
         else if(aiState == AIState.rest)
         {
             //Do behaviors
-            Debug.Log("Rest enabled");
             DoRest();
             //Check for transitions
             if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
             {
-                Debug.Log("Rest -> flee");
                 ChangeState(AIState.flee);
             }
             else if(health.currentHealth >= health.maxHealth)
@@ -242,27 +256,15 @@ public class AIHunter : MonoBehaviour
     }
     public void DoRest()
     {
-        //if (health.currentHealth == health.maxHealth)
-        //{
-        //    needsHealing = false;
-        //}
-        //while(needsHealing)
-        //{
-            //if(Time.time > nextHealTime)
-            //{
-                //Debug.Log("increment health!" + health.currentHealth);
-                //Increment heal time by (tickPeriod) value
-                //nextHealTime = Time.time + tickPeriod;
-                //StartCoroutine(DoHealingTick());
+        if(armor.canUseArmor)
+        {
+            armor.ActivateArmor();
+        }
+        //Increase current health by (restHealRate per second)
+        health.currentHealth += (restHealRate * Time.deltaTime);
 
-                //Increase current health by (restHealRate per second)
-                //health.currentHealth += (restHealRate * Time.deltaTime);
-
-                //Make sure we never go over max health
-                //health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);
-            //}
-        //}
-        
+        //Make sure we never go over max health
+        health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth); 
     }
     public void DoFlee()
     {

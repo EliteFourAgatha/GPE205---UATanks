@@ -16,6 +16,7 @@ public class AIPatrol : MonoBehaviour
     public TankMotor motor;
     public TankHealth health;
     public TankShoot shoot;
+    public Armor armor;
     public Game_Manager gameManager;
     private int avoidanceStage = 0;
     public float avoidanceTime = 2f;
@@ -23,14 +24,18 @@ public class AIPatrol : MonoBehaviour
     private float exitTime;
     //Flee used to run and heal, coward used to flee for (fleeTime) seconds upon playerShoot
     public enum AIState{patrol, chaseandshoot, chase, checkflee, flee, rest};
-    public AIState aiState = AIState.chase;
+    public AIState aiState = AIState.patrol;
     public float stateEnterTime;
-    public float aiSenseRadius = 8f;
+    public float aiSenseRadius = 10f;
     //Distance player must be away for AIPatrol to stop chasing
-    public float patrolChaseRadius = 12f;
+    public float patrolChaseRadius = 5f;
+    public float tooCloseRadius = 3f;
     private float lastShootTime;
     public float restHealRate = 1f;
+    public Transform[] waypoints;
+    private int currentWP = 0;
     private bool isPatrolForward = true;
+    public float closeEnoughToWP = 1f;
     void Start()
     {
         tfRef = gameObject.GetComponent<Transform>();
@@ -49,6 +54,10 @@ public class AIPatrol : MonoBehaviour
         if(shoot == null)
         {
             shoot = gameObject.GetComponent<TankShoot>();
+        }
+        if(armor == null)
+        {
+            armor = gameObject.GetComponent<Armor>();
         }
     }
     void Update()
@@ -69,16 +78,10 @@ public class AIPatrol : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) > aiSenseRadius)
-            {
-                Debug.Log("chase+fire -> chase");
-                ChangeState(AIState.chase);
-            }
-            else if(Vector3.Distance(tfRef.position, target.position) > patrolChaseRadius)
+            else if(Vector3.Distance(tfRef.position, target.position) >= patrolChaseRadius)
             {
                 Debug.Log("chase+fire -> patrol");
-                int closeWP = FindGameObjectsWithTag("Waypoint");
-                SetCurrentWaypoint(closeWP);
+                SetCurrentWaypoint();
                 ChangeState(AIState.patrol);
             }
         }
@@ -104,15 +107,44 @@ public class AIPatrol : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) > aiSenseRadius)
-            {
-                Debug.Log("chase+fire -> chase");
-                ChangeState(AIState.chase);
-            }
-            else if(Vector3.Distance(tfRef.position, target.position) > patrolChaseRadius)
+            else if(Vector3.Distance(tfRef.position, target.position) >= patrolChaseRadius)
             {
                 Debug.Log("chase+fire -> patrol");
+                SetCurrentWaypoint();
                 ChangeState(AIState.patrol);
+            }
+            else if(Vector3.Distance(tfRef.position, target.position) <= tooCloseRadius)
+            {
+                ChangeState(AIState.flee);
+            }
+        }
+        else if(aiState == AIState.patrol)
+        {
+            //Do behaviors
+            if(avoidanceStage != 0)
+            {
+                DoAvoidance();
+            }
+            else
+            {
+                DoPatrol();
+            }
+            //Check for transitions
+            if(health.currentHealth < health.maxHealth * 0.5f)
+            {
+                ChangeState(AIState.checkflee);
+            }
+            //if player enters spotlight collider or short raycast forward, change state
+            //filler
+            //filler code until spotlight set up
+            RaycastHit hit;
+            if(Physics.Raycast(tfRef.position, tfRef.forward, out hit, 10f))
+            {
+                if(hit.collider.CompareTag("PlayerTank"))
+                {
+                    Debug.Log("Patrol -> chaseandshoot");
+                    ChangeState(AIState.chaseandshoot);
+                }
             }
         }
         else if(aiState == AIState.flee)
@@ -130,6 +162,14 @@ public class AIPatrol : MonoBehaviour
             if(Time.time >= stateEnterTime + 30)
             {
                 ChangeState(AIState.checkflee);
+            }
+            //If fleeing and outside range, and health >= maxHealth * 0.5, chase again
+            if(Vector3.Distance(target.position, tfRef.position) >= patrolChaseRadius)
+            {
+                if(health.currentHealth >= (health.maxHealth * 0.5f))
+                {
+                    ChangeState(AIState.patrol);
+                }
             }
         }
         else if(aiState == AIState.checkflee)
@@ -250,27 +290,15 @@ public class AIPatrol : MonoBehaviour
     }
     public void DoRest()
     {
-        //if (health.currentHealth == health.maxHealth)
-        //{
-        //    needsHealing = false;
-        //}
-        //while(needsHealing)
-        //{
-            //if(Time.time > nextHealTime)
-            //{
-                //Debug.Log("increment health!" + health.currentHealth);
-                //Increment heal time by (tickPeriod) value
-                //nextHealTime = Time.time + tickPeriod;
-                //StartCoroutine(DoHealingTick());
+        if(armor.canUseArmor)
+        {
+            armor.ActivateArmor();
+        }
+        //Increase current health by (restHealRate per second)
+        health.currentHealth += (restHealRate * Time.deltaTime);
 
-                //Increase current health by (restHealRate per second)
-                //health.currentHealth += (restHealRate * Time.deltaTime);
-
-                //Make sure we never go over max health
-                //health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);
-            //}
-        //}
-        
+        //Make sure we never go over max health
+        health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth); 
     }
     public void DoFlee()
     {
@@ -288,13 +316,67 @@ public class AIPatrol : MonoBehaviour
         motor.MoveTank(data.moveSpeed);
     }
 
-    public void SetCurrentWaypoint(int closestWaypoint)
+    public void SetCurrentWaypoint()
     {
-
+        Transform closestWP = null;
+        foreach(Transform wp in waypoints)
+        {
+            //Start at high value and work backwards, infinity because size of game world unknown
+            float distance = Mathf.Infinity;
+            Vector3 diff = wp.transform.position - tfRef.position;
+            float curDistance = diff.sqrMagnitude;
+            //Check every waypoint in array. If distance is closer than one previously tested,
+            // Set distance equal to that value until closest waypoint is found.
+            if(curDistance < distance)
+            {
+                closestWP = wp;
+                currentWP = System.Array.IndexOf(waypoints, wp);
+                distance = curDistance;
+            }
+        }
+        //closestWP = currentWP;
+        Debug.Log("CurrentWP: " + currentWP);
     }
     public void DoPatrol()
     {
-        
+        //If tank is unable to rotate, (RotateTowards = false), rotate tank
+        if (motor.RotateTowardsWP(waypoints[currentWP].position, data.turnSpeed) == false)
+        {
+            motor.MoveTank(data.aiPatrolMoveSpeed);
+        }
+        //If we are close enough to waypoint, advance to next waypoint in array.
+        //Using Distance formula:
+        // Distance between points(p, q) = √(q1 - p1)^2 + (q2 - p2)^2
+        //  Use Sqr Magnitude to get square root of equation
+        if(Vector3.SqrMagnitude(waypoints[currentWP].position - tfRef.position) < (closeEnoughToWP * closeEnoughToWP))
+        {
+            if(isPatrolForward == true)
+            {
+                if(currentWP < (waypoints.Length - 1))
+                {
+                    currentWP++;
+                }
+                //Patrol backward and decrement current waypoint
+                else
+                {
+                    isPatrolForward = false;
+                    currentWP--;
+                }
+            }  
+            else
+            {
+                if(currentWP > 0)
+                {
+                    currentWP--;
+                }
+                //Patrol forward and increment current waypoint
+                else
+                {
+                    isPatrolForward = true;
+                    currentWP++;
+                }
+            }
+        }
     }
     public void ChangeState(AIState newState)
     {

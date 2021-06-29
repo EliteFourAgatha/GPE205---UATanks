@@ -6,6 +6,8 @@ public class Game_Manager : MonoBehaviour
 {
     //Static variable (same across all class instances)
     public static Game_Manager GMInstance;
+    public GameObject playerOneRef;
+    public GameObject gameOverUI;
     public TankData playerTankData;
     public TankData aiOneTankData;
     public TankData aiTwoTankData;
@@ -14,7 +16,7 @@ public class Game_Manager : MonoBehaviour
     public TankShoot playerShootRef;
     public bool playerFiredShellRef = false;
     //Awake is called when object is first created, before start calls
-    public void Awake()
+    void Awake()
     {
         //Store instance of game manager, which is this script itself
         if(GMInstance == null)
@@ -29,8 +31,22 @@ public class Game_Manager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void Update()
+    void Update()
     {
         playerFiredShellRef = playerShootRef.playerFiredShell;
+        //If player is destroyed, game over screen. Or, alternatively, can 
+        // decrement lives/score here.
+        //Can also keep track of player lives, and if 0, enable game over
+        if(playerOneRef == null)
+        {
+            EnableGameOver();
+        }
+    }
+    //Enable game over UI screen
+    // Set time scale to 0 so game freezes / nothing going on behind UI
+    void EnableGameOver()
+    {
+        Time.timeScale = 0f;
+        gameOverUI.SetActive(true);
     }
 }

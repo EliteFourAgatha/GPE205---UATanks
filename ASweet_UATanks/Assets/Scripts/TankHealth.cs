@@ -40,8 +40,6 @@ public class TankHealth : MonoBehaviour
         //Cantakedamage is true on start
         canTakeDamage = true;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (currentHealth <= 0)

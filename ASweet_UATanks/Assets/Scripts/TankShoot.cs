@@ -12,6 +12,8 @@ public class TankShoot : MonoBehaviour
     public Transform firePointTF;
     //Audio source for tank blast SFX
     public AudioSource audioSource;
+    public AudioClip bombDropSFX;
+    public AudioClip tankBlastSFX;
     public bool playerFiredShell = false;
     public TankData data;
     //Float timer to keep track of Time.time when shell is fired
@@ -19,6 +21,8 @@ public class TankShoot : MonoBehaviour
 
     //Reference to tank shell prefab
     public Rigidbody shellRound;
+    //Reference to tank bomb prefab
+    public Rigidbody bombRound;
     //Bool that must be true to call FireShell()
     public bool canFire;
     void Start()
@@ -29,6 +33,14 @@ public class TankShoot : MonoBehaviour
         if(audioSource == null)
         {
             audioSource = gameObject.GetComponent<AudioSource>();
+        }
+        if(gameObject.name == "BomberAI")
+        {
+            audioSource.clip = bombDropSFX;
+        }
+        else
+        {
+            audioSource.clip = tankBlastSFX;
         }
         if(data == null)
         {
@@ -65,6 +77,17 @@ public class TankShoot : MonoBehaviour
             playerFiredShell = true;
             StartCoroutine(DisableFiredShellBool());
         }
+    }
+    public void DropBomb(Vector3 dropPoint)
+    {
+        Rigidbody bomb;
+        //Instantiate shell above dropPoint, which is provided by AIBomber script
+        bomb = Instantiate(bombRound, dropPoint + Vector3.up * 5, Quaternion.Euler(0, 0, 0));
+        //Keep track of Time.time when shot is fired for reload timer
+        fireTimer = Time.time;
+        audioSource.Play();
+        //Set bool to false when shell is fired. Set to true once reload timer is up
+        canFire = false;
     }
     IEnumerator DisableFiredShellBool()
     {
