@@ -466,7 +466,6 @@ GameObject:
   - component: {fileID: 1887922880315683015}
   - component: {fileID: 5667673121519269190}
   - component: {fileID: 4941057407663674914}
-  - component: {fileID: 5293671980048154722}
   - component: {fileID: 4941057407663674913}
   - component: {fileID: 7622915764018284550}
   m_Layer: 0
@@ -687,18 +686,6 @@ MonoBehaviour:
   currentHealth: 0
   tankData: {fileID: 1887922880315683008}
   canTakeDamage: 0
---- !u!114 &5293671980048154722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887922879380892031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdd60aa09ef6fca4d9ddce5e8ef6cb21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4941057407663674913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,6 +719,7 @@ MonoBehaviour:
   motor: {fileID: 0}
   health: {fileID: 0}
   shoot: {fileID: 0}
+  armor: {fileID: 0}
   gameManager: {fileID: 0}
   avoidanceTime: 2
   aiState: 1

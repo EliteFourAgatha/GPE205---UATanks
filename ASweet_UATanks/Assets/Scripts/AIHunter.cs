@@ -74,9 +74,9 @@ public class AIHunter : MonoBehaviour
                 ChangeState(AIState.checkflee);
             }
             //If within senseRadius but outside of huntRadius, enable hunt mode
-            else if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
+            else if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (aiSenseRadius * aiSenseRadius))
             {
-                if(Vector3.Distance(tfRef.position, target.position) <= huntRadius)
+                if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (huntRadius * huntRadius))
                 {
                     ChangeState(AIState.hunt);
                 }
@@ -106,11 +106,11 @@ public class AIHunter : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) <= tooCloseRadius)
+            else if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (tooCloseRadius * tooCloseRadius))
             {
                 ChangeState(AIState.flee);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) > aiSenseRadius)
+            else if(Vector3.SqrMagnitude(tfRef.position - target.position) > (aiSenseRadius * aiSenseRadius))
             {
                 ChangeState(AIState.chase);
             }
@@ -132,7 +132,7 @@ public class AIHunter : MonoBehaviour
                 ChangeState(AIState.checkflee);
             }
             //If fleeing and outside range, and health >= maxHealth * 0.5, chase again
-            if(Vector3.Distance(target.position, tfRef.position) >= aiSenseRadius)
+            if(Vector3.SqrMagnitude(tfRef.position - target.position) >= (aiSenseRadius * aiSenseRadius))
             {
                 if(health.currentHealth >= (health.maxHealth * 0.5f))
                 {
@@ -145,7 +145,7 @@ public class AIHunter : MonoBehaviour
             //Do behaviors
             CheckForFlee();
             //Check for transitions
-            if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
+            if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (aiSenseRadius * aiSenseRadius))
             {
                 ChangeState(AIState.flee);
             }
@@ -159,7 +159,7 @@ public class AIHunter : MonoBehaviour
             //Do behaviors
             DoRest();
             //Check for transitions
-            if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
+            if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (aiSenseRadius * aiSenseRadius))
             {
                 ChangeState(AIState.flee);
             }
@@ -244,7 +244,7 @@ public class AIHunter : MonoBehaviour
     public void CheckForFlee()
     {
         //If player is still in range, flee.
-       if(Vector3.Distance(tfRef.position, target.position) <= data.fleeDistance)
+       if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (data.fleeDistance * data.fleeDistance))
        {
            ChangeState(AIState.flee);
        }

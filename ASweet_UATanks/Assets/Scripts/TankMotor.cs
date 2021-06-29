@@ -13,8 +13,6 @@ public class TankMotor : MonoBehaviour
     //Character Controller reference
     private CharacterController characterController;
     public TankData tankData;
-    //Starting waypoint in WaypointArray
-    private int currentWaypoint = 0;
     //Float to check if tank is close enough to waypoint
     public float closeEnoughToWaypoint = 1f;
 

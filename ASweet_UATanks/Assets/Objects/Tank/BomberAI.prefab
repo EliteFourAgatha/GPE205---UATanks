@@ -240,7 +240,6 @@ GameObject:
   - component: {fileID: 8874531756081496095}
   - component: {fileID: 3439636221558146462}
   - component: {fileID: 2704901748224304890}
-  - component: {fileID: 2913110814230622394}
   - component: {fileID: 2704901748224304889}
   - component: {fileID: 8246952409307284953}
   m_Layer: 0
@@ -249,7 +248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8874531755147003271
 Transform:
   m_ObjectHideFlags: 0
@@ -344,7 +343,6 @@ MonoBehaviour:
   audioSource: {fileID: 3439636221558146462}
   bombDropSFX: {fileID: 8300000, guid: 9ed4cbc5aca9eca4f81bd2cdaf80f8ca, type: 3}
   tankBlastSFX: {fileID: 8300000, guid: 9d785171eeed6fb449acafc93b16f4b7, type: 3}
-  roundExplodeVFX: {fileID: 6158359463099850962, guid: 02ceb220de7fed940a985e4e4709133f, type: 3}
   playerFiredShell: 0
   data: {fileID: 0}
   shellRound: {fileID: 2536531783945624043, guid: 1872017d82f01534c95a8705a788f67e, type: 3}
@@ -462,18 +460,6 @@ MonoBehaviour:
   currentHealth: 0
   tankData: {fileID: 8874531756081496088}
   canTakeDamage: 0
---- !u!114 &2913110814230622394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8874531755146713511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdd60aa09ef6fca4d9ddce5e8ef6cb21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2704901748224304889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,6 +493,7 @@ MonoBehaviour:
   motor: {fileID: 0}
   health: {fileID: 0}
   shoot: {fileID: 0}
+  armor: {fileID: 0}
   gameManager: {fileID: 0}
   avoidanceTime: 2
   aiState: 1

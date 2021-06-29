@@ -271,7 +271,6 @@ GameObject:
   - component: {fileID: 1759078545582516144}
   - component: {fileID: 5547627602796601905}
   - component: {fileID: 5100492389158715733}
-  - component: {fileID: 5416803249184118549}
   - component: {fileID: 5100492389158715734}
   - component: {fileID: 7750895321873761409}
   m_Layer: 0
@@ -492,18 +491,6 @@ MonoBehaviour:
   currentHealth: 0
   tankData: {fileID: 1759078545582516151}
   canTakeDamage: 0
---- !u!114 &5416803249184118549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759078546785713672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdd60aa09ef6fca4d9ddce5e8ef6cb21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5100492389158715734
 MonoBehaviour:
   m_ObjectHideFlags: 0

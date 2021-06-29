@@ -78,7 +78,7 @@ public class AIPatrol : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) >= patrolChaseRadius)
+            else if(Vector3.SqrMagnitude(tfRef.position - target.position) >= (patrolChaseRadius * patrolChaseRadius))
             {
                 Debug.Log("chase+fire -> patrol");
                 SetCurrentWaypoint();
@@ -107,13 +107,13 @@ public class AIPatrol : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) >= patrolChaseRadius)
+            else if(Vector3.SqrMagnitude(tfRef.position - target.position) >= (patrolChaseRadius * patrolChaseRadius))
             {
                 Debug.Log("chase+fire -> patrol");
                 SetCurrentWaypoint();
                 ChangeState(AIState.patrol);
             }
-            else if(Vector3.Distance(tfRef.position, target.position) <= tooCloseRadius)
+            else if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (tooCloseRadius * tooCloseRadius))
             {
                 ChangeState(AIState.flee);
             }
@@ -164,7 +164,7 @@ public class AIPatrol : MonoBehaviour
                 ChangeState(AIState.checkflee);
             }
             //If fleeing and outside range, and health >= maxHealth * 0.5, chase again
-            if(Vector3.Distance(target.position, tfRef.position) >= patrolChaseRadius)
+            if(Vector3.SqrMagnitude(tfRef.position - target.position) >= (patrolChaseRadius * patrolChaseRadius))
             {
                 if(health.currentHealth >= (health.maxHealth * 0.5f))
                 {
@@ -177,7 +177,7 @@ public class AIPatrol : MonoBehaviour
             //Do behaviors
             CheckForFlee();
             //Check for transitions
-            if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
+            if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (aiSenseRadius * aiSenseRadius))
             {
                 ChangeState(AIState.flee);
             }
@@ -192,7 +192,7 @@ public class AIPatrol : MonoBehaviour
             Debug.Log("Rest enabled");
             DoRest();
             //Check for transitions
-            if(Vector3.Distance(tfRef.position, target.position) <= aiSenseRadius)
+            if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (aiSenseRadius * aiSenseRadius))
             {
                 Debug.Log("Rest -> flee");
                 ChangeState(AIState.flee);
@@ -278,7 +278,7 @@ public class AIPatrol : MonoBehaviour
     public void CheckForFlee()
     {
         //If player is still in range, flee.
-       if(Vector3.Distance(tfRef.position, target.position) <= data.fleeDistance)
+       if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (data.fleeDistance * data.fleeDistance))
        {
            ChangeState(AIState.flee);
        }
