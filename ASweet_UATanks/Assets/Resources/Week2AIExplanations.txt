@@ -1,0 +1,30 @@
+All of the AI listed have similar functionality for chasing to get in range,
+fleeing when the player is too close, resting when below half health, and 
+resuming chasing when health is back to full. Then I branched off of this base
+behavior to make the tanks feel like different entities.
+
+Coward AI:
+
+The coward AI will chase the player, and if within a certain range, will "hear"
+the player fire a shell, and immediately flee for a set time. This behavior can happen
+during all of the other states, unless already fleeing.
+
+Hunter AI:
+
+The hunter AI will follow the player until within the "hunt radius". If the player is
+close enough, the hunter will then stop and start firing at the player's current position
+with an increased fire rate. This AI doesn't have chase and shoot behavior, and can only
+fire when sitting still and hunting. If the player gets too close, the tank flees, then 
+resumes trying to get into hunt range.
+
+Patrol AI:
+
+The patrol AI follows a set patrol path unless the player enters its raycast, (Vision/LOS)
+in which case it will immediately chase and shoot at the player. It moves slightly slower than other
+tanks so that the player has a chance to leave its range. If player leaves range, 
+the AI searches for nearest waypoint, sets that as current, and resumes patrol route.
+
+Bomber AI:
+Similar to hunter AI, though it never allows the player to get too close. It stays within
+2 different radii, at larger range than the AISenseRadius. It drops explosive rounds that
+hit in an Area of Effect, and aims at a space just ahead of where the tank is currently moving.
