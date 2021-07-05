@@ -56,6 +56,9 @@ public class MapGenerator : MonoBehaviour
     public void GenerateGrid()
     {
         gridGenerated = false;
+        //Set Random's initial state to chosen map seed, so designer can choose type of random behavior
+        //  Use UnityEngine.Random because we are using System library and they both have definitions
+        //    for random.
         UnityEngine.Random.InitState(mapSeed);
         //Clear previous grid before starting function
         grid = new Room[columns, rows];
