@@ -10,6 +10,8 @@ public class TankShoot : MonoBehaviour
     //Store transform in a variable.
     // This avoids calling GameObject.GetComponent() multiple times, which is slow
     public Transform firePointTF;
+    public Transform firePointTFTwo;
+    public Transform firePointTFThree;
     //Audio source for tank blast SFX
     public AudioSource audioSource;
     public AudioClip bombDropSFX;
@@ -25,6 +27,7 @@ public class TankShoot : MonoBehaviour
     public Rigidbody bombRound;
     //Bool that must be true to call FireShell()
     public bool canFire;
+    public float strayAngleValue;
     void Start()
     {
         //CanFire is true when game first starts
@@ -57,14 +60,17 @@ public class TankShoot : MonoBehaviour
             canFire = true;
         }
     }
+    //Take numberOfShells as parameter for triple shot powerup
     public void FireShell()
     {
         Rigidbody shell;
+
         //Instantiate shell at firepoint, which is transform child of Tank (located at barrel)
         shell = Instantiate(shellRound, firePointTF.position, firePointTF.rotation);
         //Use AddForce to move shell in direction tank is currently facing (forward)
         //  ForceMode.Impulse applies instant force
         shell.AddForce(firePointTF.forward * data.shellSpeed, ForceMode.Impulse);
+
         //Keep track of Time.time when shot is fired for reload timer
         fireTimer = Time.time;
         audioSource.Play();

@@ -114,6 +114,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -195,6 +196,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -242,13 +244,14 @@ GameObject:
   - component: {fileID: 2704901748224304890}
   - component: {fileID: 2704901748224304889}
   - component: {fileID: 8246952409307284953}
+  - component: {fileID: -6562796123281016034}
   m_Layer: 0
   m_Name: BomberAI
   m_TagString: EnemyTank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8874531755147003271
 Transform:
   m_ObjectHideFlags: 0
@@ -257,7 +260,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8874531755146713511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.34}
+  m_LocalPosition: {x: 50, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8874531755147003265}
@@ -319,14 +322,11 @@ MonoBehaviour:
   armorResetTimer: 10
   armorDurationTime: 3
   shootReloadTimer: 2
-  enemyReloadTimer: 3
   enemyHuntReloadTimer: 1
   enemyBombReloadTimer: 5
   timeoutTimer: 5
-  playerShellDamage: 5
-  enemyShellDamage: 3
-  playerMaxHealth: 30
-  enemyMaxHealth: 25
+  shellDamage: 5
+  maxHealth: 25
 --- !u!114 &8874531756081496095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +340,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePointTF: {fileID: 4633716167026765879}
+  firePointTFTwo: {fileID: 0}
+  firePointTFThree: {fileID: 0}
   audioSource: {fileID: 3439636221558146462}
   bombDropSFX: {fileID: 8300000, guid: 9ed4cbc5aca9eca4f81bd2cdaf80f8ca, type: 3}
   tankBlastSFX: {fileID: 8300000, guid: 9d785171eeed6fb449acafc93b16f4b7, type: 3}
@@ -348,6 +350,7 @@ MonoBehaviour:
   shellRound: {fileID: 2536531783945624043, guid: 1872017d82f01534c95a8705a788f67e, type: 3}
   bombRound: {fileID: 7823021716380361886, guid: ae8463e3e6a296e478e0bd58991454b0, type: 3}
   canFire: 0
+  strayAngleValue: 0
 --- !u!82 &3439636221558146462
 AudioSource:
   m_ObjectHideFlags: 0
@@ -358,7 +361,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9d785171eeed6fb449acafc93b16f4b7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9ed4cbc5aca9eca4f81bd2cdaf80f8ca, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
@@ -456,8 +459,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdce76bc555d3948baa4a79294f1231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trfRef: {fileID: 0}
   maxHealth: 0
   currentHealth: 0
+  audioSource: {fileID: 0}
+  explosionSFX: {fileID: 8300000, guid: 186a5d6599dcc0b4cbe08ad0ee5a8e99, type: 3}
+  explosionVFX: {fileID: 263806095189928864, guid: 98e6c830d2072ea49aed0ddebf980348, type: 3}
   tankData: {fileID: 8874531756081496088}
   canTakeDamage: 0
 --- !u!114 &2704901748224304889
@@ -503,6 +510,20 @@ MonoBehaviour:
   tooCloseRadius: 3
   bombDistance: 2
   restHealRate: 1
+--- !u!114 &-6562796123281016034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8874531755146713511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7d633a842036d4bb395e1a830a1ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerupList: []
+  data: {fileID: 0}
 --- !u!1 &8874531755146713513
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +607,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -667,6 +689,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1

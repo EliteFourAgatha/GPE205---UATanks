@@ -55,6 +55,14 @@ public class AICoward : MonoBehaviour
         {
             armor = gameObject.GetComponent<Armor>();
         }
+        if(target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("PlayerTank").transform;
+        }
+        if(gameManager == null)
+        {
+            gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<Game_Manager>();
+        }
     }
     void Update()
     {
@@ -95,7 +103,7 @@ public class AICoward : MonoBehaviour
                 DoChase();
 
                 //Limit fire rate by (data.enemyReloadTimer) seconds
-                if(Time.time > lastShootTime + data.enemyReloadTimer)
+                if(Time.time > lastShootTime + data.shootReloadTimer)
                 {
                     shoot.FireShell();
                     lastShootTime = Time.time;

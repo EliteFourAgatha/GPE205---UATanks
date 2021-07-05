@@ -6,7 +6,11 @@ TagManager:
   tags:
   - PlayerTank
   - EnemyTank
-  - Waypoint
+  - TankSpawnPoint
+  - PowerupSpawnPoint
+  - Room
+  - PatrolWaypoint
+  - PowerupSpawner
   layers:
   - Default
   - TransparentFX

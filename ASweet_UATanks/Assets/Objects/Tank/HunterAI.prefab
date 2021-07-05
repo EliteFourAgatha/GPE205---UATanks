@@ -113,6 +113,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -194,6 +195,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -340,6 +342,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -421,6 +424,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -468,6 +472,7 @@ GameObject:
   - component: {fileID: 4941057407663674914}
   - component: {fileID: 4941057407663674913}
   - component: {fileID: 7622915764018284550}
+  - component: {fileID: 2226606115844055408}
   m_Layer: 0
   m_Name: HunterAI
   m_TagString: EnemyTank
@@ -483,7 +488,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887922879380892031}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.34}
+  m_LocalPosition: {x: 50, y: 0, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1887922879380796761}
@@ -545,14 +550,11 @@ MonoBehaviour:
   armorResetTimer: 10
   armorDurationTime: 3
   shootReloadTimer: 2
-  enemyReloadTimer: 3
   enemyHuntReloadTimer: 1
   enemyBombReloadTimer: 5
   timeoutTimer: 5
-  playerShellDamage: 5
-  enemyShellDamage: 3
-  playerMaxHealth: 30
-  enemyMaxHealth: 25
+  shellDamage: 5
+  maxHealth: 25
 --- !u!114 &1887922880315683015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +568,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePointTF: {fileID: 2402054718382162159}
+  firePointTFTwo: {fileID: 0}
+  firePointTFThree: {fileID: 0}
   audioSource: {fileID: 5667673121519269190}
   bombDropSFX: {fileID: 8300000, guid: 9ed4cbc5aca9eca4f81bd2cdaf80f8ca, type: 3}
   tankBlastSFX: {fileID: 8300000, guid: 9d785171eeed6fb449acafc93b16f4b7, type: 3}
@@ -574,6 +578,7 @@ MonoBehaviour:
   shellRound: {fileID: 2536531783945624043, guid: 1872017d82f01534c95a8705a788f67e, type: 3}
   bombRound: {fileID: 7823021716380361886, guid: ae8463e3e6a296e478e0bd58991454b0, type: 3}
   canFire: 0
+  strayAngleValue: 0
 --- !u!82 &5667673121519269190
 AudioSource:
   m_ObjectHideFlags: 0
@@ -682,8 +687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdce76bc555d3948baa4a79294f1231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trfRef: {fileID: 0}
   maxHealth: 0
   currentHealth: 0
+  audioSource: {fileID: 0}
+  explosionSFX: {fileID: 8300000, guid: 186a5d6599dcc0b4cbe08ad0ee5a8e99, type: 3}
+  explosionVFX: {fileID: 263806095189928864, guid: 98e6c830d2072ea49aed0ddebf980348, type: 3}
   tankData: {fileID: 1887922880315683008}
   canTakeDamage: 0
 --- !u!114 &4941057407663674913
@@ -728,6 +737,20 @@ MonoBehaviour:
   huntRadius: 5
   tooCloseRadius: 3
   restHealRate: 1
+--- !u!114 &2226606115844055408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887922879380892031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7d633a842036d4bb395e1a830a1ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerupList: []
+  data: {fileID: 0}
 --- !u!1001 &3993319770387460743
 PrefabInstance:
   m_ObjectHideFlags: 0

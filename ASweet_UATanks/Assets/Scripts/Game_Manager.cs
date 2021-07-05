@@ -9,12 +9,17 @@ public class Game_Manager : MonoBehaviour
     public GameObject playerOneRef;
     public GameObject gameOverUI;
     public TankData playerTankData;
-    public TankData aiOneTankData;
-    public TankData aiTwoTankData;
-    public TankData aiThreeTankData;
-    public TankData aiFourTankData;
+    public TankData cowardTankData;
+    public TankData hunterTankData;
+    public TankData patrolTankData;
+    public TankData bomberTankData;
     public TankShoot playerShootRef;
+    public MapGenerator mapGenerator;
+    public SpawnTanks spawnTanks;
+    public AudioSource audioSource;
+    public GameObject[] powerupSpawnerArray;
     public bool playerFiredShellRef = false;
+
     //Awake is called when object is first created, before start calls
     void Awake()
     {
@@ -23,12 +28,36 @@ public class Game_Manager : MonoBehaviour
         {
             GMInstance = this;
         }
+        if(mapGenerator == null)
+        {
+            mapGenerator = gameObject.GetComponent<MapGenerator>();
+        }
+        if(spawnTanks == null)
+        {
+            spawnTanks = gameObject.GetComponent<SpawnTanks>();
+        }
+        if(audioSource == null)
+        {
+            audioSource = gameObject.GetComponent<AudioSource>();
+        }
         //If game manager already exists, destroy object this script is attached to.
         //  Makes sure nobody can create another instance of GameManager by accident
         else
         {
             Debug.LogError("Error: Only one instance of GameManager can exist");
             Destroy(gameObject);
+        }
+    }
+    void Start()
+    {
+        //Generate grid before game can start
+        mapGenerator.GenerateGrid();
+        //If grid is generated (spawnpoint objects exist, can search)
+        if(mapGenerator.gridGenerated)
+        {
+            spawnTanks.SpawnAtRandomSpawnpoint();
+            powerupSpawnerArray = GameObject.FindGameObjectsWithTag("PowerupSpawner");
+            EnableBGM();
         }
     }
     void Update()
@@ -48,5 +77,9 @@ public class Game_Manager : MonoBehaviour
     {
         Time.timeScale = 0f;
         gameOverUI.SetActive(true);
+    }
+    public void EnableBGM()
+    {
+        audioSource.Play();
     }
 }

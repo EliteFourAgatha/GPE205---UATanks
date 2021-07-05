@@ -23,21 +23,15 @@ public class TankData : MonoBehaviour
     //Float value for length of time armor is active, in seconds
     public float armorDurationTime = 3f;
     //Float value for time to reload TankShoot.FireShell(), in seconds
-    public float shootReloadTimer = 2f;
-    //Float value for time for enemy to reload TankShoot.Fireshell(), in seconds
-    public float enemyReloadTimer = 3f;
+    public float shootReloadTimer = 3f;
     //Float value for time for hunter AI to reload TankShoot.FireShell(), in seconds
     public float enemyHuntReloadTimer = 1f;
     //Float value for time for bomber AI to reload TankShoot.DropBomb(), in seconds
     public float enemyBombReloadTimer = 5f;
     //TankShoot.FireShell() timeout period, in seconds
     public float timeoutTimer = 5f;
-    //TankShoot.FireShell() Player damage value
-    public float playerShellDamage = 5f;
-    //TankShoot.FireShell() Enemy damage value
-    public float enemyShellDamage = 3f;
-    //Player tank max health value
-    public float playerMaxHealth = 30f;
-    //Enemy tank max health value
-    public float enemyMaxHealth = 25f;
+    //TankShoot.FireShell() damage value
+    public float shellDamage = 5f;
+    //Max health value
+    public float maxHealth = 25f;
 }

@@ -7,10 +7,14 @@ using UnityEngine;
 [RequireComponent (typeof(TankData))]
 public class TankHealth : MonoBehaviour
 {
+    public Transform trfRef;
     //Floats for max and current health to determine if tank should be destroyed on collision
     public float maxHealth;
     public float currentHealth;
     private float damageValue;
+    public AudioSource audioSource;
+    public AudioClip explosionSFX;
+    public GameObject explosionVFX;
     public TankData tankData;
     public bool canTakeDamage;
     void Start()
@@ -20,21 +24,13 @@ public class TankHealth : MonoBehaviour
         {
             tankData = gameObject.GetComponent<TankData>();
         }
-        //Check tag. If player, set maxHealth to (playerMaxHealth)
-        //  Also set damageValue equal to (enemyShellDamage)
+        if(trfRef == null)
+        {
+            trfRef = gameObject.GetComponent<Transform>();
+        }
+        audioSource = gameObject.GetComponent<AudioSource>();
 
-        //If tag is enemy, set maxHealth to (enemyMaxHealth)
-        //  Also set damageValue equal to (playerShellDamage)
-        if(gameObject.tag == "PlayerTank")
-        {
-            maxHealth = tankData.playerMaxHealth;
-            damageValue = tankData.enemyShellDamage;
-        }
-        else
-        {
-            maxHealth = tankData.enemyMaxHealth;
-            damageValue = tankData.playerShellDamage;
-        }
+        maxHealth = tankData.maxHealth;
         //Set current health = max health on start
         currentHealth = maxHealth;
         //Cantakedamage is true on start
@@ -51,12 +47,14 @@ public class TankHealth : MonoBehaviour
     {
         if(canTakeDamage == true)
         {
-            currentHealth -= damageValue;
+            currentHealth -= tankData.shellDamage;
         }
     }
     public void DestroyTank()
     {
-        //SFX / VFX
+        audioSource.clip = explosionSFX;
+        AudioSource.PlayClipAtPoint(explosionSFX, trfRef.position);
+        Instantiate(explosionVFX, trfRef.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

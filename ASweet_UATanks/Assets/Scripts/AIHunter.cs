@@ -54,6 +54,14 @@ public class AIHunter : MonoBehaviour
         {
             armor = gameObject.GetComponent<Armor>();
         }
+        if(target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("PlayerTank").transform;
+        }
+        if(gameManager == null)
+        {
+            gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<Game_Manager>();
+        }
     }
     void Update()
     {

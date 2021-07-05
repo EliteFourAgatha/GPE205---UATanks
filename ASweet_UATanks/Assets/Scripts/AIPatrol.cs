@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 //RequireComponent tells Unity that a TankData component needs to be added
 //  to any game object this script is attached to
@@ -18,6 +19,7 @@ public class AIPatrol : MonoBehaviour
     public TankShoot shoot;
     public Armor armor;
     public Game_Manager gameManager;
+    public MapGenerator mapGenerator;
     private int avoidanceStage = 0;
     public float avoidanceTime = 2f;
     //Exit time for obstacle avoidance
@@ -36,6 +38,7 @@ public class AIPatrol : MonoBehaviour
     private int currentWP = 0;
     private bool isPatrolForward = true;
     public float closeEnoughToWP = 1f;
+    private bool hitWaypoint;
     void Start()
     {
         tfRef = gameObject.GetComponent<Transform>();
@@ -59,9 +62,26 @@ public class AIPatrol : MonoBehaviour
         {
             armor = gameObject.GetComponent<Armor>();
         }
+        if(target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("PlayerTank").transform;
+        }
+        if(gameManager == null)
+        {
+            gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<Game_Manager>();
+        }
+        if(mapGenerator == null)
+        {
+            mapGenerator = gameManager.GetComponent<MapGenerator>();
+        }
     }
     void Update()
     {
+        if(mapGenerator.gridGenerated)
+        {
+            aiState = AIState.flee;
+            GetWaypointArray(mapGenerator.generatedWaypoints);
+        }
         if(aiState == AIState.chase)
         {
             //Do behaviors
@@ -96,7 +116,7 @@ public class AIPatrol : MonoBehaviour
             {
                 DoChase();
                 //Limit fire rate by (data.enemyReloadTimer) seconds
-                if(Time.time > lastShootTime + data.enemyReloadTimer)
+                if(Time.time > lastShootTime + data.shootReloadTimer)
                 {
                     shoot.FireShell();
                     lastShootTime = Time.time;
@@ -145,6 +165,10 @@ public class AIPatrol : MonoBehaviour
                     Debug.Log("Patrol -> chaseandshoot");
                     ChangeState(AIState.chaseandshoot);
                 }
+            }
+            if(Time.time >= stateEnterTime + 20 && hitWaypoint == false)
+            {
+                ChangeState(AIState.chase);
             }
         }
         else if(aiState == AIState.flee)
@@ -316,6 +340,8 @@ public class AIPatrol : MonoBehaviour
         motor.MoveTank(data.moveSpeed);
     }
 
+    //Set current waypoint to waypoint closest to tank
+    // Called when tank goes from chasing -> patrolling
     public void SetCurrentWaypoint()
     {
         Transform closestWP = null;
@@ -337,6 +363,18 @@ public class AIPatrol : MonoBehaviour
         //closestWP = currentWP;
         Debug.Log("CurrentWP: " + currentWP);
     }
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // Need to add to DoPatrol AI so that the tank actually follows patrol route, instead of
+    //  running mindlessly into walls which is happening currently
     public void DoPatrol()
     {
         //If tank is unable to rotate, (RotateTowards = false), rotate tank
@@ -350,17 +388,21 @@ public class AIPatrol : MonoBehaviour
         //  Use Sqr Magnitude to get square root of equation
         if(Vector3.SqrMagnitude(waypoints[currentWP].position - tfRef.position) < (closeEnoughToWP * closeEnoughToWP))
         {
+            Debug.Log("Hit waypoint, going next");
+            hitWaypoint = true;
             if(isPatrolForward == true)
             {
                 if(currentWP < (waypoints.Length - 1))
                 {
                     currentWP++;
+                    hitWaypoint = false;
                 }
                 //Patrol backward and decrement current waypoint
                 else
                 {
                     isPatrolForward = false;
                     currentWP--;
+                    hitWaypoint = false;
                 }
             }  
             else
@@ -368,20 +410,27 @@ public class AIPatrol : MonoBehaviour
                 if(currentWP > 0)
                 {
                     currentWP--;
+                    hitWaypoint = false;
                 }
                 //Patrol forward and increment current waypoint
                 else
                 {
                     isPatrolForward = true;
                     currentWP++;
+                    hitWaypoint = false;
                 }
             }
         }
+        Debug.Log("current waypoint in patrol loop" + currentWP);
     }
     public void ChangeState(AIState newState)
     {
         //Change state to given parameter value
         aiState = newState;
         stateEnterTime = Time.time;
+    }
+    public void GetWaypointArray(List<Transform> generatedWaypoints)
+    {
+        waypoints = generatedWaypoints.ToArray();
     }
 }
