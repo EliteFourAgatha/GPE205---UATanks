@@ -36,15 +36,33 @@ public class InputController : MonoBehaviour
 
     void Update()
     {
-        //If player presses space and canFire = true (not still on respawn timer), FireShell()
-        if(Input.GetKey(KeyCode.Space) && shoot.canFire == true)
+        //If player one...
+        if(input == InputScheme.WASD)
         {
-            shoot.FireShell();
+            //If player presses Q and canUseArmor = true (not still on respawn timer), ActivateArmor()
+            if(Input.GetKey(KeyCode.Q) && armor.canUseArmor == true)
+            {
+                armor.ActivateArmor();
+            }
+            //If player presses space and canFire = true (not still on respawn timer), FireShell()
+            if(Input.GetKey(KeyCode.Space) && shoot.canFire == true)
+            {
+                shoot.FireShell();
+            }
         }
-        //If player presses Q and canUseArmor = true (not still on respawn timer), ActivateArmor()
-        if(Input.GetKey(KeyCode.Q) && armor.canUseArmor == true)
+        //If player two...
+        if(input == InputScheme.arrowkeys)
         {
-            armor.ActivateArmor();
+            //If player presses RightShift and canUseArmor = true (not still on respawn timer), ActivateArmor()
+            if(Input.GetKey(KeyCode.RightShift) && armor.canUseArmor == true)
+            {
+                armor.ActivateArmor();
+            }
+            //If player presses space and canFire = true (not still on respawn timer), FireShell()
+            if(Input.GetKey(KeyCode.RightControl) && shoot.canFire == true)
+            {
+                shoot.FireShell();
+            }
         }
         switch(input)
         {

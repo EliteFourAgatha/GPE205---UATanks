@@ -12,6 +12,7 @@ public class TankHealth : MonoBehaviour
     public float maxHealth;
     public float currentHealth;
     private float damageValue;
+    public Game_Manager gameManager;
     public AudioSource audioSource;
     public AudioClip explosionSFX;
     public GameObject explosionVFX;

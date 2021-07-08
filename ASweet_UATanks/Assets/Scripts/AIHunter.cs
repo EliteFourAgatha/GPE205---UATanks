@@ -56,7 +56,15 @@ public class AIHunter : MonoBehaviour
         }
         if(target == null)
         {
-            target = GameObject.FindGameObjectWithTag("PlayerTank").transform;
+            int playerTargetRandInt = Random.Range(0, 1);
+            if(playerTargetRandInt == 0)
+            {
+                target = GameObject.FindGameObjectWithTag("PlayerOneTank").transform;
+            }
+            else
+            {
+                target = GameObject.FindGameObjectWithTag("PlayerTwoTank").transform;
+            }
         }
         if(gameManager == null)
         {
@@ -240,7 +248,7 @@ public class AIHunter : MonoBehaviour
         if(Physics.Raycast(tfRef.position, tfRef.forward, out hit, speed))
         {
             //If we don't hit the player...
-            if(!hit.collider.CompareTag("PlayerTank"))
+            if(!hit.collider.CompareTag("PlayerOneTank") && !hit.collider.CompareTag("PlayerTwoTank"))
             {
                 //Then cannot move
                 return false;

@@ -57,7 +57,15 @@ public class AICoward : MonoBehaviour
         }
         if(target == null)
         {
-            target = GameObject.FindGameObjectWithTag("PlayerTank").transform;
+            int playerTargetRandInt = Random.Range(0, 1);
+            if(playerTargetRandInt == 0)
+            {
+                target = GameObject.FindGameObjectWithTag("PlayerOneTank").transform;
+            }
+            else
+            {
+                target = GameObject.FindGameObjectWithTag("PlayerTwoTank").transform;
+            }
         }
         if(gameManager == null)
         {
@@ -259,7 +267,7 @@ public class AICoward : MonoBehaviour
         if(Physics.Raycast(tfRef.position, tfRef.forward, out hit, speed))
         {
             //If we don't hit the player...
-            if(!hit.collider.CompareTag("PlayerTank"))
+            if(!hit.collider.CompareTag("PlayerOneTank") && !hit.collider.CompareTag("PlayerTwoTank"))
             {
                 //Then cannot move
                 return false;
@@ -310,14 +318,30 @@ public class AICoward : MonoBehaviour
         motor.MoveTank(data.moveSpeed);
     }
     public void CheckForCowardEscape()
-    {        
-        if(gameManager.playerFiredShellRef == true)
-        {            
-            if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (cowardRadius * cowardRadius))
+    {   
+        //Player one fired shell, retreat if that is current target
+        if(gameManager.playerOneFiredShellRef == true)
+        {
+            if(target.tag == "PlayerOneTank")
             {
-                cowardTimer = Time.time;
-                ChangeState(AIState.coward);
-            }            
+                if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (cowardRadius * cowardRadius))
+                {
+                    cowardTimer = Time.time;
+                    ChangeState(AIState.coward);
+                }    
+            }
+        }
+        //Player two fired shell, retreat if that is current target
+        if(gameManager.playerTwoFiredShellRef == true)
+        {
+            if(target.tag == "PlayerTwoTank")
+            {
+                if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (cowardRadius * cowardRadius))
+                {
+                    cowardTimer = Time.time;
+                    ChangeState(AIState.coward);
+                }    
+            }
         }
     }
     public void DoCowardEscape()

@@ -104,6 +104,7 @@
 -define:ENABLE_TILEMAP
 -define:ENABLE_TIMELINE
 -define:ENABLE_LEGACY_INPUT_MANAGER
+-define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
 -r:"C:/Program Files/Unity/Hub/Editor/2021.1.12f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
@@ -300,6 +301,8 @@
 -r:"C:/Program Files/Unity/Hub/Editor/2021.1.12f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll"
 -r:"C:/Users/stink/Documents/GitHub/GPE205---UATanks/ASweet_UATanks/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aE.dag/Unity.Postprocessing.Editor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aE.dag/Unity.Postprocessing.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.Rider.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.TextMeshPro.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.TextMeshPro.ref.dll"
@@ -315,19 +318,23 @@
 "Assets/Scripts/AIHunter.cs"
 "Assets/Scripts/AIPatrol.cs"
 "Assets/Scripts/Armor.cs"
+"Assets/Scripts/AudioManager.cs"
 "Assets/Scripts/Game_Manager.cs"
 "Assets/Scripts/InputController.cs"
+"Assets/Scripts/Lives.cs"
 "Assets/Scripts/MapGenerator.cs"
 "Assets/Scripts/Pickup.cs"
 "Assets/Scripts/Powerup.cs"
 "Assets/Scripts/PowerupController.cs"
 "Assets/Scripts/PowerupGenerator.cs"
+"Assets/Scripts/ScoreData.cs"
 "Assets/Scripts/ShellScript.cs"
 "Assets/Scripts/SpawnTanks.cs"
 "Assets/Scripts/TankData.cs"
 "Assets/Scripts/TankHealth.cs"
 "Assets/Scripts/TankMotor.cs"
 "Assets/Scripts/TankShoot.cs"
+"Assets/Scripts/UIManager.cs"
 -langversion:8.0
 
 /deterministic

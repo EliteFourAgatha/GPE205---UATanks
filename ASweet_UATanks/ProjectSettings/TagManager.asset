@@ -4,13 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - PlayerTank
   - EnemyTank
   - TankSpawnPoint
   - PowerupSpawnPoint
   - Room
   - PatrolWaypoint
   - PowerupSpawner
+  - PlayerTwoTank
+  - PlayerOneTank
+  - PlayerTank
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Post-Processing
   - 
   - 
   - 

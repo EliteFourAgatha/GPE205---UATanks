@@ -30,7 +30,7 @@ public class PowerupGenerator : MonoBehaviour
                 randomIndex = UnityEngine.Random.Range(0, pickupPrefabArray.Length);
                 Debug.Log(randomIndex);
                 //Spawn pickup and set nextSpawnTime
-                spawnedPickup = Instantiate(pickupPrefabArray[randomIndex], tfRef.position, Quaternion.identity);
+                spawnedPickup = Instantiate(pickupPrefabArray[randomIndex], tfRef.position + Vector3.up, Quaternion.identity);
                 nextSpawnTime = Time.time + spawnDelay;
             }
         }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6845353026659513892}
   - component: {fileID: 2270810852238618410}
   - component: {fileID: 1658491909981463570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpeedPowerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,6 +143,7 @@ MonoBehaviour:
     damageModifier: 0
     isHealthHeart: 0
     fireRateModifier: 0
+    isArmorModifier: 0
     duration: 5
     isPermanent: 0
   goodFeedback: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}

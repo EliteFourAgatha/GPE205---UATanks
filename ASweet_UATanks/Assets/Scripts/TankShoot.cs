@@ -16,7 +16,8 @@ public class TankShoot : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip bombDropSFX;
     public AudioClip tankBlastSFX;
-    public bool playerFiredShell = false;
+    public bool playerOneFiredShell = false;
+    public bool playerTwoFiredShell = false;
     public TankData data;
     //Float timer to keep track of Time.time when shell is fired
     private float fireTimer;
@@ -78,9 +79,14 @@ public class TankShoot : MonoBehaviour
         canFire = false;
         //Tells AI that player just called FireShell(). Can add other tags here for
         //  multiplayer (multiple players to check)
-        if(gameObject.tag == "PlayerTank")
+        if(gameObject.tag == "PlayerOneTank")
         {
-            playerFiredShell = true;
+            playerOneFiredShell = true;
+            StartCoroutine(DisableFiredShellBool());
+        }
+        else if(gameObject.tag == "PlayerTwoTank")
+        {
+            playerTwoFiredShell = true;
             StartCoroutine(DisableFiredShellBool());
         }
     }
@@ -98,6 +104,7 @@ public class TankShoot : MonoBehaviour
     IEnumerator DisableFiredShellBool()
     {
         yield return new WaitForSeconds(2f);
-        playerFiredShell = false;
+        playerOneFiredShell = false;
+        playerTwoFiredShell = false;
     }
 }

@@ -345,7 +345,8 @@ MonoBehaviour:
   audioSource: {fileID: 3439636221558146462}
   bombDropSFX: {fileID: 8300000, guid: 9ed4cbc5aca9eca4f81bd2cdaf80f8ca, type: 3}
   tankBlastSFX: {fileID: 8300000, guid: 9d785171eeed6fb449acafc93b16f4b7, type: 3}
-  playerFiredShell: 0
+  playerOneFiredShell: 0
+  playerTwoFiredShell: 0
   data: {fileID: 0}
   shellRound: {fileID: 2536531783945624043, guid: 1872017d82f01534c95a8705a788f67e, type: 3}
   bombRound: {fileID: 7823021716380361886, guid: ae8463e3e6a296e478e0bd58991454b0, type: 3}
@@ -462,6 +463,7 @@ MonoBehaviour:
   trfRef: {fileID: 0}
   maxHealth: 0
   currentHealth: 0
+  gameManager: {fileID: 0}
   audioSource: {fileID: 0}
   explosionSFX: {fileID: 8300000, guid: 186a5d6599dcc0b4cbe08ad0ee5a8e99, type: 3}
   explosionVFX: {fileID: 263806095189928864, guid: 98e6c830d2072ea49aed0ddebf980348, type: 3}

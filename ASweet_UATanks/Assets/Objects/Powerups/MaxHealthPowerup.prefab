@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5501202109923115933}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -1.87, y: 1, z: 0.017}
+  m_LocalPosition: {x: -1.87, y: 0, z: 0.017}
   m_LocalScale: {x: 0.5, y: 0.4, z: 0.5}
   m_Children:
   - {fileID: 5501202111049506672}
@@ -213,6 +213,7 @@ MonoBehaviour:
     damageModifier: 0
     isHealthHeart: 1
     fireRateModifier: 0
+    isArmorModifier: 0
     duration: 5
     isPermanent: 0
   goodFeedback: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}

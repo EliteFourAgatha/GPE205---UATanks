@@ -9,8 +9,14 @@ public class ShellScript : MonoBehaviour
     //  Guarantees it won't linger in game world
     private float destroyTimer = 3f;
     public ParticleSystem roundExplodeVFX;
+    public AudioSource audioSource;
+    public AudioClip tankHitSFX;
     void Start()
     {
+        if(audioSource == null)
+        {
+            audioSource = gameObject.GetComponent<AudioSource>();
+        }
         startTime = Time.time;
     }
 
@@ -31,14 +37,16 @@ public class ShellScript : MonoBehaviour
             TankHealth tankHealth = collision.gameObject.GetComponent<TankHealth>();
             tankHealth.DamageTank();
             roundExplosion = Instantiate(roundExplodeVFX, collision.transform.position, Quaternion.Euler(0, 0, 0));
+            AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
             Destroy(gameObject);
         }
         //If object collided with is Player tank, do (data.EnemyShellDamage) damage
-        else if (collision.gameObject.tag == "PlayerTank")
+        else if (collision.gameObject.tag == "PlayerOneTank" || collision.gameObject.tag == "PlayerTwoTank")
         {
             TankHealth tankHealth = collision.gameObject.GetComponent<TankHealth>();
             tankHealth.DamageTank();
             roundExplosion = Instantiate(roundExplodeVFX, collision.transform.position, Quaternion.Euler(0, 0, 0));
+            AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
             Destroy(gameObject);
         }
         else
