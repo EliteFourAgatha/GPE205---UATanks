@@ -28,21 +28,19 @@ public class AudioManager : MonoBehaviour
         sfxVolume = sfxSlider.value;
         PlayerPrefs.SetFloat("sfxVolume", sfxVolume);
         masterAudioMixer.SetFloat("sfxVolume", sfxVolume);
+        PlayerPrefs.Save();
     }
     public void SaveMusicVolume()
     {
         musicVolume = musicSlider.value;
         PlayerPrefs.SetFloat("musicVolume", musicVolume);
         masterAudioMixer.SetFloat("musicVolume", musicVolume);
+        PlayerPrefs.Save();
     }
     public void EnableGameMusic()
     {
         audioSource.Stop();
         audioSource.clip = gameMusic;
         audioSource.Play();
-    }
-    public void DisableGameMusic()
-    {
-        audioSource.Stop();
     }
 }

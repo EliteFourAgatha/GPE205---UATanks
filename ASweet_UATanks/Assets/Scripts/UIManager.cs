@@ -13,10 +13,17 @@ public class UIManager : MonoBehaviour
     public MapGenerator mapGenerator;
     public Game_Manager gameManager;
     public SpawnTanks spawnTanks;
+    public AudioManager audioManager;
+    public ScoreManager scoreManager;
+    public LifeManager lifeManager;
     public Slider sfxSlider;
     public Slider musicSlider;
     private float sfxSliderValue;
     private float musicSliderValue;
+    void Awake() 
+    {
+        LoadPlayerPrefs();
+    }
     void Start()
     {
         if(mapGenerator == null)
@@ -31,7 +38,14 @@ public class UIManager : MonoBehaviour
         {
             spawnTanks = gameObject.GetComponent<SpawnTanks>();
         }
-        LoadPlayerPrefsForOptionsMenu();
+        if(scoreManager == null)
+        {
+            scoreManager = gameObject.GetComponent<ScoreManager>();
+        }
+        if(lifeManager == null)
+        {
+            lifeManager = gameObject.GetComponent<LifeManager>();
+        }
     }
     //Play game button
     public void PlayGame()
@@ -51,6 +65,8 @@ public class UIManager : MonoBehaviour
     public void EnableStartMenu()
     {
         optionsMenu.SetActive(false);
+        scoreManager.DisableScoreText(2);
+        scoreManager.DisableScoreText(1);
         gameOverUI.SetActive(false);
         startMenu.SetActive(true);
     }
@@ -59,35 +75,63 @@ public class UIManager : MonoBehaviour
     {
         mapGenerator.randomSpawnType = MapGenerator.RandomSpawnType.mapOfDay;
         PlayerPrefs.SetString("randomMode", "mapOfDay");
+        PlayerPrefs.Save();
     }
     public void ChooseRandomMap()
     {
         mapGenerator.randomSpawnType = MapGenerator.RandomSpawnType.random;
         PlayerPrefs.SetString("randomMode", "random");
+        PlayerPrefs.Save();
     }
     //Options Menu Button
     public void ChooseSinglePlayer()
     {
         spawnTanks.singlePlayerEnabled = true;
         spawnTanks.multiPlayerEnabled = false;
-        PlayerPrefs.SetString("numPlayersGameMode", "single");
+        PlayerPrefs.SetString("numPlayers", "single");
+        PlayerPrefs.Save();
     }
     //Options Menu Button
     public void ChooseMultiPlayer()
     {
         spawnTanks.multiPlayerEnabled = true;
         spawnTanks.singlePlayerEnabled = false;
-        PlayerPrefs.SetString("numPlayersGameMode", "multi");
+        PlayerPrefs.SetString("numPlayers", "multi");
+        PlayerPrefs.Save();
     }
     //Load all options data stored in player prefs.
     // Called in start function of UIManager. Will load all previous session options data
     //  Player prefs are stored locally and persist between sessions/scene changes
-    public void LoadPlayerPrefsForOptionsMenu()
+    public void LoadPlayerPrefs()
     {
-        sfxSliderValue = PlayerPrefs.GetFloat("sfxVolume");
-        musicSliderValue = PlayerPrefs.GetFloat("musicVolume");
+        string randomMode;
+        if(PlayerPrefs.HasKey("sfxVolume"))
+        {
+            sfxSliderValue = PlayerPrefs.GetFloat("sfxVolume");
+            audioManager.masterAudioMixer.SetFloat("sfxVolume", sfxSliderValue);
+        }
+        else
+        {
+            sfxSliderValue = sfxSlider.maxValue;
+        }
+        if(PlayerPrefs.HasKey("musicVolume"))
+        {
+            musicSliderValue = PlayerPrefs.GetFloat("musicVolume");
+            audioManager.masterAudioMixer.SetFloat("musicVolume", musicSliderValue);
+        }
+        else
+        {
+            musicSliderValue = musicSlider.maxValue;
+        }
+        if(PlayerPrefs.HasKey("randomMode"))
+        {
+            randomMode = PlayerPrefs.GetString("randomMode");
+        }
+        else
+        {
+            randomMode = "presetSeed";
+        }
 
-        string randomMode = PlayerPrefs.GetString("randomMode");
         if(randomMode == "mapOfDay")
         {
             mapGenerator.randomSpawnType = MapGenerator.RandomSpawnType.mapOfDay;
@@ -101,25 +145,30 @@ public class UIManager : MonoBehaviour
             mapGenerator.randomSpawnType = MapGenerator.RandomSpawnType.presetSeed;
         }
         
-        string numPlayerMode = PlayerPrefs.GetString("numPlayersGameMode");
-        if(numPlayerMode == "single")
+        if(PlayerPrefs.HasKey("numPlayers"))
         {
-            spawnTanks.singlePlayerEnabled = true;
+            string numPlayerMode = PlayerPrefs.GetString("numPlayers");
+            if(numPlayerMode == "single")
+            {
+                spawnTanks.singlePlayerEnabled = true;
+            }
+            else if(numPlayerMode == "multi")
+            {
+                spawnTanks.multiPlayerEnabled = true;
+            }
         }
-        else if(numPlayerMode == "multi")
-        {
-            spawnTanks.multiPlayerEnabled = true;
-        }
-        //If numPlayersGameMode = null...
+        //If numPlayersGameMode = null..
         else
         {
             spawnTanks.singlePlayerEnabled = true;
-            PlayerPrefs.SetString("numPlayersGameMode", "single");
+            PlayerPrefs.SetString("numPlayers", "single");
+            PlayerPrefs.Save();
         }
     }
     public void QuitGame()
     {
-        //save high score etc. with player prefs?
+        scoreManager.SaveHighScoreToPlayerPrefs();
+        PlayerPrefs.Save();
         Application.Quit();
     }
 }

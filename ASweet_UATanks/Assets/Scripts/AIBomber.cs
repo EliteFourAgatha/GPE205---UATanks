@@ -12,6 +12,7 @@ public class AIBomber : MonoBehaviour
     private Transform tfRef;
     //Target transform to chase / flee from
     public Transform target;
+    public Transform nullTargetTransform;
     public TankData data;
     public TankMotor motor;
     public TankHealth health;
@@ -26,8 +27,8 @@ public class AIBomber : MonoBehaviour
     public enum AIState{bomb, chase, checkflee, flee, rest};
     public AIState aiState = AIState.chase;
     public float stateEnterTime;
-    public float aiSenseRadius = 8f;
-    public float bomberRadius = 15f;
+    public float aiSenseRadius = 6f;
+    public float bomberRadius = 13f;
     public float tooCloseRadius = 3f;
     private float lastShootTime;
     public float bombDistance = 2f;
@@ -57,15 +58,7 @@ public class AIBomber : MonoBehaviour
         }
         if(target == null)
         {
-            int playerTargetRandInt = Random.Range(0, 1);
-            if(playerTargetRandInt == 0)
-            {
-                target = GameObject.FindGameObjectWithTag("PlayerOneTank").transform;
-            }
-            else
-            {
-                target = GameObject.FindGameObjectWithTag("PlayerTwoTank").transform;
-            }
+            target = GameObject.FindGameObjectWithTag("PlayerOneTank").transform;
         }
         if(gameManager == null)
         {
@@ -74,6 +67,7 @@ public class AIBomber : MonoBehaviour
     }
     void Update()
     {
+        target = ChooseTargetByProximity();
         if(aiState == AIState.chase)
         {
             //Do behaviors
@@ -317,8 +311,60 @@ public class AIBomber : MonoBehaviour
         aiState = newState;
         stateEnterTime = Time.time;
     }
-    public void ChangeTarget(Transform newTarget)
+    //Have AI choose current target (player one or two) based on whichever one is closer
+    // If no player target available, set target equal to nulltarget on prefab to avoid nullreference errors
+    public Transform ChooseTargetByProximity()
     {
-        target = newTarget;
+        GameObject[] playerArray = new GameObject[2];
+        GameObject playerOneRef = GameObject.FindGameObjectWithTag("PlayerOneTank");
+        GameObject playerTwoRef = GameObject.FindGameObjectWithTag("PlayerTwoTank");
+        if(playerOneRef == null)
+        {
+            if(playerTwoRef == null)
+            {
+                return nullTargetTransform;
+            }
+            else
+            {
+                Debug.Log("player 1 target -> now player 2 target");
+                //Player one dead / null, new target is player 2
+                return playerTwoRef.transform;
+            }
+        }
+        if(playerTwoRef == null)
+        {
+            if(playerOneRef == null)
+            {
+                return nullTargetTransform;
+            }
+            else
+            {
+                Debug.Log("player 2 target -> now player 1 target");
+                //Player two dead / null, new target is player 1
+                return playerOneRef.transform;
+            }
+        }
+        playerArray[0] = playerOneRef;
+        playerArray[1] = playerTwoRef;
+        GameObject closestTarget;
+        Transform closeTargetTFRef = gameObject.transform;
+        float checkDistance = Mathf.Infinity;
+        //Iterate through array and find closest game object
+        foreach(GameObject player in playerArray)
+        {
+            float difference = Vector3.SqrMagnitude(player.transform.position - gameObject.transform.position);
+            if(difference < checkDistance)
+            {
+                closestTarget = player;
+                closeTargetTFRef = player.transform;
+                checkDistance = difference;
+            }
+        }
+        if(closeTargetTFRef == null)
+        {
+            return nullTargetTransform;
+        }
+        return closeTargetTFRef;
     }
+
 }

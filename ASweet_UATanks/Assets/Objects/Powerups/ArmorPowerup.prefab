@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7758844495711645990}
   - component: {fileID: 3085227199163574312}
   - component: {fileID: 2474519226191291152}
+  - component: {fileID: 6522388980968495703}
   m_Layer: 0
   m_Name: ArmorPowerup
   m_TagString: Untagged
@@ -160,10 +161,10 @@ AudioSource:
   m_GameObject: {fileID: 2832553805520087226}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -247,3 +248,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!122 &6522388980968495703
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2832553805520087226}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4280266781
+  m_Size: 1

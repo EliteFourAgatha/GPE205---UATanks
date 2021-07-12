@@ -12,7 +12,8 @@ TagManager:
   - PowerupSpawner
   - PlayerTwoTank
   - PlayerOneTank
-  - PlayerTank
+  - CameraFollowOne
+  - CameraFollowTwo
   layers:
   - Default
   - TransparentFX

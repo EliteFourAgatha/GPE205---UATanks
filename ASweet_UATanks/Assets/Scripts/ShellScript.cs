@@ -8,15 +8,20 @@ public class ShellScript : MonoBehaviour
     //How long to wait to destroy shell if it hasn't collided already
     //  Guarantees it won't linger in game world
     private float destroyTimer = 3f;
+    public ScoreManager scoreManager;
     public ParticleSystem roundExplodeVFX;
     public AudioSource audioSource;
     public AudioClip tankHitSFX;
+    public enum TankThatFiredShell{enemy, playerOne, playerTwo};
+    public TankThatFiredShell tankThatFiredShell;
     void Start()
     {
         if(audioSource == null)
         {
             audioSource = gameObject.GetComponent<AudioSource>();
         }
+        tankHitSFX = (AudioClip)Resources.Load("tankHitSFX");
+        scoreManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreManager>();
         startTime = Time.time;
     }
 
@@ -37,7 +42,18 @@ public class ShellScript : MonoBehaviour
             TankHealth tankHealth = collision.gameObject.GetComponent<TankHealth>();
             tankHealth.DamageTank();
             roundExplosion = Instantiate(roundExplodeVFX, collision.transform.position, Quaternion.Euler(0, 0, 0));
-            AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
+            if(gameObject != null)
+            {
+                AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
+            }
+            if(tankThatFiredShell == TankThatFiredShell.playerOne)
+            {
+                scoreManager.AddPoint(1);
+            }
+            else if(tankThatFiredShell == TankThatFiredShell.playerTwo)
+            {
+                scoreManager.AddPoint(2);
+            }
             Destroy(gameObject);
         }
         //If object collided with is Player tank, do (data.EnemyShellDamage) damage
@@ -46,8 +62,19 @@ public class ShellScript : MonoBehaviour
             TankHealth tankHealth = collision.gameObject.GetComponent<TankHealth>();
             tankHealth.DamageTank();
             roundExplosion = Instantiate(roundExplodeVFX, collision.transform.position, Quaternion.Euler(0, 0, 0));
-            AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
-            Destroy(gameObject);
+            if(gameObject != null)
+            {
+                AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
+            }
+            if(tankThatFiredShell == TankThatFiredShell.playerOne)
+            {
+                scoreManager.AddPoint(1);
+            }
+            else if(tankThatFiredShell == TankThatFiredShell.playerTwo)
+            {
+                scoreManager.AddPoint(2);
+            }
+                Destroy(gameObject);
         }
         else
         {

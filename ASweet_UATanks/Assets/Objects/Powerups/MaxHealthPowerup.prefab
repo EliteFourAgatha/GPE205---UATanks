@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5501202109923115932}
   - component: {fileID: 2673519018672341453}
   - component: {fileID: 5892029426320494072}
+  - component: {fileID: 7914505641795577642}
   m_Layer: 0
   m_Name: MaxHealthPowerup
   m_TagString: Untagged
@@ -109,7 +110,7 @@ AudioSource:
   m_GameObject: {fileID: 5501202109923115933}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
@@ -221,6 +222,18 @@ MonoBehaviour:
   audioSource: {fileID: 2673519018672341453}
   tfRef: {fileID: 0}
   isGoodPowerup: 1
+--- !u!122 &7914505641795577642
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501202109923115933}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4279341830
+  m_Size: 1
 --- !u!1 &5501202111049506673
 GameObject:
   m_ObjectHideFlags: 0

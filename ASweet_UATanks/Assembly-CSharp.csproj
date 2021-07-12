@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
   </PropertyGroup>
@@ -36,28 +36,30 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\AIHunter.cs" />
      <Compile Include="Assets\Scripts\AIPatrol.cs" />
      <Compile Include="Assets\Scripts\PowerupGenerator.cs" />
      <Compile Include="Assets\Scripts\Game_Manager.cs" />
      <Compile Include="Assets\Scripts\AudioManager.cs" />
      <Compile Include="Assets\Scripts\TankShoot.cs" />
+     <Compile Include="Assets\Scripts\PickupHover.cs" />
      <Compile Include="Assets\Scripts\Pickup.cs" />
-     <Compile Include="Assets\Scripts\ScoreData.cs" />
      <Compile Include="Assets\Scripts\Armor.cs" />
-     <Compile Include="Assets\Scripts\Lives.cs" />
      <Compile Include="Assets\Scripts\AICoward.cs" />
      <Compile Include="Assets\Scripts\MapGenerator.cs" />
      <Compile Include="Assets\Scripts\ShellScript.cs" />
-     <Compile Include="Assets\Objects\RoomTileTemplate\Scripts\Room.cs" />
+     <Compile Include="Assets\Scripts\Room.cs" />
      <Compile Include="Assets\Scripts\SpawnTanks.cs" />
      <Compile Include="Assets\Scripts\TankHealth.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
+     <Compile Include="Assets\Scripts\LifeManager.cs" />
      <Compile Include="Assets\Scripts\PowerupController.cs" />
      <Compile Include="Assets\Scripts\UIManager.cs" />
      <Compile Include="Assets\Scripts\TankMotor.cs" />
      <Compile Include="Assets\Scripts\AIBomber.cs" />
      <Compile Include="Assets\Scripts\Powerup.cs" />
+     <Compile Include="Assets\Scripts\ScoreManager.cs" />
      <Compile Include="Assets\Scripts\TankData.cs" />
      <None Include="Assets\Resources\Week2AIExplanations.txt" />
     <Reference Include="UnityEngine">

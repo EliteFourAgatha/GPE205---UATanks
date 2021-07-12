@@ -19,6 +19,8 @@ public class Game_Manager : MonoBehaviour
     public SpawnTanks spawnTanks;
     public UIManager uiManager;
     public AudioManager audioManager;
+    public LifeManager lifeManager;
+    public ScoreManager scoreManager;
     public GameObject[] powerupSpawnerArray;
     public GameObject[] activeAIArray;
     public bool playerOneFiredShellRef = false;
@@ -32,6 +34,13 @@ public class Game_Manager : MonoBehaviour
         {
             GMInstance = this;
         }
+        //If game manager already exists, destroy object this script is attached to.
+        //  Makes sure nobody can create another instance of GameManager by accident
+        else
+        {
+            Debug.LogError("Error: Only one instance of GameManager can exist");
+            Destroy(gameObject);
+        }
         if(mapGenerator == null)
         {
             mapGenerator = gameObject.GetComponent<MapGenerator>();
@@ -44,43 +53,58 @@ public class Game_Manager : MonoBehaviour
         {
             uiManager = gameObject.GetComponent<UIManager>();
         }
-        //If game manager already exists, destroy object this script is attached to.
-        //  Makes sure nobody can create another instance of GameManager by accident
-        else
+        if(lifeManager == null)
         {
-            Debug.LogError("Error: Only one instance of GameManager can exist");
-            Destroy(gameObject);
+            lifeManager = gameObject.GetComponent<LifeManager>();
+        }
+        if(scoreManager == null)
+        {
+            scoreManager = gameObject.GetComponent<ScoreManager>();
         }
     }
     void Update()
     {
         playerOneFiredShellRef = playerShootRef.playerOneFiredShell;
         playerTwoFiredShellRef = playerShootRef.playerTwoFiredShell;
-        //If player is destroyed, game over screen. Or, alternatively, can 
-        // decrement lives/score here.
-        //Can also keep track of player lives, and if 0, enable game over
-
     }
     //Depending on options selected...
     //Generate map, spawn tanks, disable UI
     public void PlayGame()
     {
+        gameOverUI.SetActive(false);
+        Time.timeScale = 1f;
         //Generate grid before game can start
         mapGenerator.GenerateGrid();
         //If grid is generated (spawnpoint objects exist, can search)
         if(mapGenerator.gridGenerated)
         {
-            spawnTanks.SpawnAtRandomSpawnpoint();
+            //Reset game state (single player)
+            if(spawnTanks.singlePlayerEnabled)
+            {
+                lifeManager.ResetLives(1);
+                lifeManager.EnableLivesText(1);
+                scoreManager.ResetCurrentScores();
+                scoreManager.EnableScoreText(1);
+                spawnTanks.SpawnAtRandomSpawnpoint();
+            }
+            //Reset game state (multi player)
+            else if(spawnTanks.multiPlayerEnabled)
+            {
+                lifeManager.ResetLives(1);
+                lifeManager.ResetLives(2);
+                lifeManager.EnableLivesText(2);
+                scoreManager.ResetCurrentScores();
+                scoreManager.EnableScoreText(2);
+                spawnTanks.SpawnAtRandomSpawnpoint();
+            }
             powerupSpawnerArray = GameObject.FindGameObjectsWithTag("PowerupSpawner");
             audioManager.EnableGameMusic();
+            scoreManager.ChangeHighScoreToStatus(true);
             activeAIArray = GameObject.FindGameObjectsWithTag("EnemyTank");
         }
     }
-    //Enable game over UI screen
-    // Set time scale to 0 so game freezes / nothing going on behind UI
-    void EnableGameOver()
+    public void OnApplicationQuit() 
     {
-        Time.timeScale = 0f;
-        gameOverUI.SetActive(true);
+        scoreManager.SaveHighScoreToPlayerPrefs();
     }
 }

@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 3075559797416395900}
   - component: {fileID: -3676185162187672746}
   - component: {fileID: -1225087130565933721}
+  - component: {fileID: 8062742582237037426}
   m_Layer: 6
   m_Name: DamagePowerup
   m_TagString: Untagged
@@ -276,7 +277,7 @@ AudioSource:
   m_GameObject: {fileID: 7428495957460668179}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
@@ -363,6 +364,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!122 &8062742582237037426
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7428495957460668179}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278753334
+  m_Size: 1
 --- !u!1 &8676907099899155048
 GameObject:
   m_ObjectHideFlags: 0

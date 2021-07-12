@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6845353026659513892}
   - component: {fileID: 2270810852238618410}
   - component: {fileID: 1658491909981463570}
+  - component: {fileID: 1644404960232749719}
   m_Layer: 6
   m_Name: SpeedPowerup
   m_TagString: Untagged
@@ -160,7 +161,7 @@ AudioSource:
   m_GameObject: {fileID: 1304960973772746680}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
@@ -247,3 +248,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!122 &1644404960232749719
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304960973772746680}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278221587
+  m_Size: 1

@@ -12,8 +12,11 @@ public class TankHealth : MonoBehaviour
     public float maxHealth;
     public float currentHealth;
     private float damageValue;
+    public LifeManager lifeManager;
     public Game_Manager gameManager;
+    public SpawnTanks spawnTanks;
     public AudioSource audioSource;
+    public AudioClip fireShellSFX;
     public AudioClip explosionSFX;
     public GameObject explosionVFX;
     public TankData tankData;
@@ -31,6 +34,8 @@ public class TankHealth : MonoBehaviour
         }
         audioSource = gameObject.GetComponent<AudioSource>();
 
+        spawnTanks = GameObject.FindGameObjectWithTag("GameController").GetComponent<SpawnTanks>();
+
         maxHealth = tankData.maxHealth;
         //Set current health = max health on start
         currentHealth = maxHealth;
@@ -39,7 +44,7 @@ public class TankHealth : MonoBehaviour
     }
     void Update()
     {
-        if (currentHealth <= 0)
+        if(currentHealth <= 0)
         {
             DestroyTank();
         }
@@ -54,8 +59,33 @@ public class TankHealth : MonoBehaviour
     public void DestroyTank()
     {
         audioSource.clip = explosionSFX;
-        AudioSource.PlayClipAtPoint(explosionSFX, trfRef.position);
+        if(gameObject != null)
+        {
+            AudioSource.PlayClipAtPoint(explosionSFX, trfRef.position);
+        }
+        audioSource.clip = fireShellSFX;
         Instantiate(explosionVFX, trfRef.position, Quaternion.identity);
-        Destroy(gameObject);
+        if(gameObject.tag == "PlayerOneTank")
+        {
+            lifeManager.DecreasePlayerLife(1);
+            gameObject.SetActive(false);
+        }
+        else if(gameObject.tag == "PlayerTwoTank")
+        {
+            lifeManager.DecreasePlayerLife(2);
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            currentHealth = maxHealth;
+            spawnTanks.WaitAndRespawnEnemy(gameObject);
+            gameObject.SetActive(false);
+        }
+    }
+    //Call onenable when gameobject setactive(true). Use to reset health to maximum
+    public void OnEnable() 
+    {
+        Debug.Log("reset health of " + gameObject);
+        currentHealth = maxHealth;
     }
 }

@@ -5,6 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - roundExplodeVFX: {fileID: 6158359463099850962, guid: 02ceb220de7fed940a985e4e4709133f, type: 3}
+  - audioSource: {instanceID: 0}
+  - tankHitSFX: {fileID: 8300000, guid: 652b9d94732e7b74e90b348017af593c, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

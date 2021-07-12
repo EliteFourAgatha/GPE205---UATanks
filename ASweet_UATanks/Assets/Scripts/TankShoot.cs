@@ -28,7 +28,6 @@ public class TankShoot : MonoBehaviour
     public Rigidbody bombRound;
     //Bool that must be true to call FireShell()
     public bool canFire;
-    public float strayAngleValue;
     void Start()
     {
         //CanFire is true when game first starts
@@ -68,6 +67,22 @@ public class TankShoot : MonoBehaviour
 
         //Instantiate shell at firepoint, which is transform child of Tank (located at barrel)
         shell = Instantiate(shellRound, firePointTF.position, firePointTF.rotation);
+        //Tells AI that player just called FireShell() (for coward script).
+        // Also tells shell script which tank fired it for score calculation
+        if(gameObject.tag == "PlayerOneTank")
+        {
+            ShellScript shellScript = shell.GetComponent<ShellScript>();
+            shellScript.tankThatFiredShell = ShellScript.TankThatFiredShell.playerOne;
+            playerOneFiredShell = true;
+            StartCoroutine(DisableFiredShellBool());
+        }
+        else if(gameObject.tag == "PlayerTwoTank")
+        {
+            ShellScript shellScript = shell.GetComponent<ShellScript>();
+            shellScript.tankThatFiredShell = ShellScript.TankThatFiredShell.playerTwo;
+            playerTwoFiredShell = true;
+            StartCoroutine(DisableFiredShellBool());
+        }
         //Use AddForce to move shell in direction tank is currently facing (forward)
         //  ForceMode.Impulse applies instant force
         shell.AddForce(firePointTF.forward * data.shellSpeed, ForceMode.Impulse);
@@ -77,18 +92,6 @@ public class TankShoot : MonoBehaviour
         audioSource.Play();
         //Set bool to false when shell is fired. Set to true once reload timer is up
         canFire = false;
-        //Tells AI that player just called FireShell(). Can add other tags here for
-        //  multiplayer (multiple players to check)
-        if(gameObject.tag == "PlayerOneTank")
-        {
-            playerOneFiredShell = true;
-            StartCoroutine(DisableFiredShellBool());
-        }
-        else if(gameObject.tag == "PlayerTwoTank")
-        {
-            playerTwoFiredShell = true;
-            StartCoroutine(DisableFiredShellBool());
-        }
     }
     public void DropBomb(Vector3 dropPoint)
     {

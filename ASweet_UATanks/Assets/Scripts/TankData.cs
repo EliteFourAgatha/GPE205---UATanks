@@ -5,7 +5,7 @@ using UnityEngine;
 public class TankData : MonoBehaviour
 {
     //Movespeed for MoveTank in meters/second
-    public float moveSpeed = 3f;
+    public float moveSpeed = 10f;
     //Movespeed for AIPatrol tank in meters/second
     public float aiPatrolMoveSpeed = 1.5f;
     //Euler angle value for RotateTank in degrees/second
@@ -33,5 +33,5 @@ public class TankData : MonoBehaviour
     //TankShoot.FireShell() damage value
     public float shellDamage = 5f;
     //Max health value
-    public float maxHealth = 25f;
+    public float maxHealth = 5f;
 }

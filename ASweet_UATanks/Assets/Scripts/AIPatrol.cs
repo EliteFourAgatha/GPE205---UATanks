@@ -13,6 +13,7 @@ public class AIPatrol : MonoBehaviour
     private Transform tfRef;
     //Target transform to chase / flee from
     public Transform target;
+    public Transform nullTargetTransform;
     public TankData data;
     public TankMotor motor;
     public TankHealth health;
@@ -64,15 +65,7 @@ public class AIPatrol : MonoBehaviour
         }
         if(target == null)
         {
-            int playerTargetRandInt = Random.Range(0, 1);
-            if(playerTargetRandInt == 0)
-            {
-                target = GameObject.FindGameObjectWithTag("PlayerOneTank").transform;
-            }
-            else
-            {
-                target = GameObject.FindGameObjectWithTag("PlayerTwoTank").transform;
-            }
+            target = GameObject.FindGameObjectWithTag("PlayerOneTank").transform;
         }
         if(gameManager == null)
         {
@@ -85,6 +78,7 @@ public class AIPatrol : MonoBehaviour
     }
     void Update()
     {
+        target = ChooseTargetByProximity();
         if(mapGenerator.gridGenerated)
         {
             aiState = AIState.flee;
@@ -440,5 +434,64 @@ public class AIPatrol : MonoBehaviour
     public void GetWaypointArray(List<Transform> generatedWaypoints)
     {
         waypoints = generatedWaypoints.ToArray();
+    }
+    //Have AI choose current target (player one or two) based on whichever one is closer
+    // If no player target available, set target equal to nulltarget on prefab to avoid nullreference errorss
+    public Transform ChooseTargetByProximity()
+    {
+        GameObject[] playerArray = new GameObject[2];
+        GameObject playerOneRef = GameObject.FindGameObjectWithTag("PlayerOneTank");
+        GameObject playerTwoRef = GameObject.FindGameObjectWithTag("PlayerTwoTank");
+        if(playerOneRef == null)
+        {
+            if(playerTwoRef == null)
+            {
+                return nullTargetTransform;
+            }
+            else
+            {
+                Debug.Log("player 1 null, player 2 target");
+                //Player one dead / null, new target is player 2
+                return playerTwoRef.transform;
+            }
+        }
+        if(playerTwoRef == null)
+        {
+            if(playerOneRef == null)
+            {
+                return nullTargetTransform;
+            }
+            else
+            {
+                Debug.Log("player 2 null, player 1 target");
+                //Player two dead / null, new target is player 1
+                return playerOneRef.transform;
+
+            }
+        }
+        playerArray[0] = playerOneRef;
+        playerArray[1] = playerTwoRef;
+        GameObject closestTarget;
+        Transform closeTargetTFRef = gameObject.transform;
+        float checkDistance = Mathf.Infinity;
+        //Iterate through array and find closest game object
+        foreach(GameObject player in playerArray)
+        {
+            float difference = Vector3.SqrMagnitude(player.transform.position - gameObject.transform.position);
+            if(difference < checkDistance)
+            {
+                closestTarget = player;
+                closeTargetTFRef = player.transform;
+                checkDistance = difference;
+            }
+        }
+        if(closeTargetTFRef == null)
+        {
+            return nullTargetTransform;
+        }
+        else
+        {
+            return closeTargetTFRef;
+        }
     }
 }
