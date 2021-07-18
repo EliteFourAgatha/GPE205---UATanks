@@ -36,6 +36,7 @@ public class Pickup : MonoBehaviour
             if(isGoodPowerup)
             {
                 AudioSource.PlayClipAtPoint(goodFeedback, tfRef.position, 1f);
+                powController.EnablePowerupRing();
             }
             else
             {

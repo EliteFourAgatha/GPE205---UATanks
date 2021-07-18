@@ -97,7 +97,7 @@ public class TankShoot : MonoBehaviour
     {
         Rigidbody bomb;
         //Instantiate shell above dropPoint, which is provided by AIBomber script
-        bomb = Instantiate(bombRound, dropPoint + Vector3.up * 5, Quaternion.Euler(0, 0, 0));
+        bomb = Instantiate(bombRound, dropPoint + Vector3.up * 4, Quaternion.Euler(0, 0, 0));
         //Keep track of Time.time when shot is fired for reload timer
         fireTimer = Time.time;
         audioSource.Play();

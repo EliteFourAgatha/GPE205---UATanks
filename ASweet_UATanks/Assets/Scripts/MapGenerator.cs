@@ -104,11 +104,15 @@ public class MapGenerator : MonoBehaviour
                 {
                     //If on bottom row (i=0), open north door
                     tempRoom.doorNorth.SetActive(false);
+                    //Also enable tree scenery (south)
+                    tempRoom.treeScenerySouth.SetActive(true);
                 }
                 else if(i == (rows - 1))
                 {
                     //If on top row (i = rows.length - 1), open south door
                     tempRoom.doorSouth.SetActive(false);
+                    //Also enable tree scenery (north)
+                    tempRoom.treeSceneryNorth.SetActive(true);
                 }
                 else
                 {
@@ -122,11 +126,15 @@ public class MapGenerator : MonoBehaviour
                 {
                     //If on first column (j=0), open east door
                     tempRoom.doorEast.SetActive(false);
+                    //Also enable tree scenery (west)
+                    tempRoom.treeSceneryWest.SetActive(true);
                 }
                 else if(j == (columns - 1))
                 {
                     //If on last column (j = rows.length - 1), open west door
                     tempRoom.doorWest.SetActive(false);
+                    //Also enable tree scenery (east)
+                    tempRoom.treeSceneryEast.SetActive(true);
                 }
                 else
                 {

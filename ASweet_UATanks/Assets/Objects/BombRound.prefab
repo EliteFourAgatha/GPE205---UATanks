@@ -52,6 +52,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -110,7 +111,7 @@ GameObject:
   - component: {fileID: 8416705125039688732}
   m_Layer: 0
   m_Name: BombRound
-  m_TagString: Untagged
+  m_TagString: AOEBomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,7 +174,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e575f5f72b8ac947bfab65bd8c2899f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreManager: {fileID: 0}
   roundExplodeVFX: {fileID: 6158359463099850962, guid: 02ceb220de7fed940a985e4e4709133f, type: 3}
+  aoeField: {fileID: 1021155088688627653, guid: 64fa1000f467ecb4bbbfedbd952ab83d, type: 3}
+  audioSource: {fileID: 0}
+  tankHitSFX: {fileID: 0}
+  tankThatFiredShell: 0
 --- !u!1 &7617904149763442120
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,6 +232,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -322,6 +329,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

@@ -10,6 +10,7 @@ public class ShellScript : MonoBehaviour
     private float destroyTimer = 3f;
     public ScoreManager scoreManager;
     public ParticleSystem roundExplodeVFX;
+    public GameObject aoeField;
     public AudioSource audioSource;
     public AudioClip tankHitSFX;
     public enum TankThatFiredShell{enemy, playerOne, playerTwo};
@@ -76,8 +77,11 @@ public class ShellScript : MonoBehaviour
             }
                 Destroy(gameObject);
         }
+        //If bomb collides with wall or ground...
+        //  Instantiate AOE field
         else
         {
+            Instantiate(aoeField, collision.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
             Destroy(gameObject);
         }
     }

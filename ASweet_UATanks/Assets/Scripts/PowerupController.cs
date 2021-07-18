@@ -13,6 +13,7 @@ public class PowerupController : MonoBehaviour
     //Dynamic array (list) to hold current powerups
     public List<Powerup> powerupList;
     public TankData data;
+    public GameObject powerupRingVFX;
     void Start()
     {
         //Initialize list
@@ -62,5 +63,17 @@ public class PowerupController : MonoBehaviour
         //Because expiredPowerups is local list, it is destroyed when function ends.
         //  Call clear to learn how to empty list
         expiredPowerups.Clear();
+    }
+    //Enable powerup ring, wait for coroutine delay, then set inactive again
+    public void EnablePowerupRing()
+    {
+        powerupRingVFX.SetActive(true);
+        StartCoroutine(WaitAndDisablePowerupRing());
+    }
+    //simple coroutine to wait and then disable powerup ring
+    IEnumerator WaitAndDisablePowerupRing()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        powerupRingVFX.SetActive(false);
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7620481015556983770}
   - component: {fileID: 7620481015556983769}
   - component: {fileID: 7620481015556983768}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 7620481015670020262}
   - component: {fileID: 7620481015670020261}
   - component: {fileID: 7620481015670020260}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 7620481015783574262}
   - component: {fileID: 7620481015783574261}
   - component: {fileID: 7620481015783574260}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 7620481016052450407}
   - component: {fileID: 7620481016052450406}
   - component: {fileID: 7620481016052450405}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 3491874209920284566}
   - component: {fileID: 866417410508255756}
   - component: {fileID: -7672134936712342080}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: FireRatePowerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}

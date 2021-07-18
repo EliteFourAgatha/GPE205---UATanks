@@ -47,12 +47,6 @@ public class UIManager : MonoBehaviour
             lifeManager = gameObject.GetComponent<LifeManager>();
         }
     }
-    //Play game button
-    public void PlayGame()
-    {
-        startMenu.SetActive(false);
-        gameManager.PlayGame();
-    }
     //Options menu button
     public void EnableOptionsMenu()
     {

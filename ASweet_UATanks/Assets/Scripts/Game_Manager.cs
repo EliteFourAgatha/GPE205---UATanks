@@ -9,6 +9,7 @@ public class Game_Manager : MonoBehaviour
     public GameObject playerOneRef;
     public GameObject playerTwoRef;
     public GameObject gameOverUI;
+    public GameObject startMenu;
     public TankData playerTankData;
     public TankData cowardTankData;
     public TankData hunterTankData;
@@ -71,6 +72,7 @@ public class Game_Manager : MonoBehaviour
     //Generate map, spawn tanks, disable UI
     public void PlayGame()
     {
+        startMenu.SetActive(false);
         gameOverUI.SetActive(false);
         Time.timeScale = 1f;
         //Generate grid before game can start

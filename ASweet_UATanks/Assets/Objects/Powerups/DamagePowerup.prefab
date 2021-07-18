@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5846993339686719205}
   - component: {fileID: 1584192134063764080}
   - component: {fileID: 1756333564655131984}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BombCap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 8519579203800854019}
   - component: {fileID: 6516230258698186239}
   - component: {fileID: 3249362620683911882}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BombShell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: -3676185162187672746}
   - component: {fileID: -1225087130565933721}
   - component: {fileID: 8062742582237037426}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: DamagePowerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 871757127995118222}
   - component: {fileID: 8516330764890939126}
   - component: {fileID: 1824780659725114459}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BombTail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

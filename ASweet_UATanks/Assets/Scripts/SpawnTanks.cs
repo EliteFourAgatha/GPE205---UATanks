@@ -143,7 +143,7 @@ public class SpawnTanks : MonoBehaviour
         {
             //Set player start position equal to random spawn point
             Transform playerSpawn = SpawnPoints[randomSpawnIndex].transform;
-            playerOneTank.transform.position = playerSpawn.position;
+            playerOneTank.transform.position = playerSpawn.position + new Vector3(0, 0.5f, 0);
             playerOneTank.SetActive(true);
         }
         else if(playerNum == 2)

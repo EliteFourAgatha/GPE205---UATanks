@@ -14,6 +14,7 @@ TagManager:
   - PlayerOneTank
   - CameraFollowOne
   - CameraFollowTwo
+  - AOEBomb
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Water
   - UI
   - Post-Processing
-  - 
+  - Armor
   - 
   - 
   - 
