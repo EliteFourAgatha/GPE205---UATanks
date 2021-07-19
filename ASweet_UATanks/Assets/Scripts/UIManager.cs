@@ -52,6 +52,7 @@ public class UIManager : MonoBehaviour
     {
         startMenu.SetActive(false);
         optionsMenu.SetActive(true);
+        LoadPlayerPrefs();
         sfxSlider.value = sfxSliderValue;
         musicSlider.value = musicSliderValue;
     }
@@ -62,6 +63,7 @@ public class UIManager : MonoBehaviour
         scoreManager.DisableScoreText(2);
         scoreManager.DisableScoreText(1);
         gameOverUI.SetActive(false);
+        audioManager.EnableMenuMusic();
         startMenu.SetActive(true);
     }
     //Options Menu, choose map (random seed) type
@@ -102,21 +104,25 @@ public class UIManager : MonoBehaviour
         if(PlayerPrefs.HasKey("sfxVolume"))
         {
             sfxSliderValue = PlayerPrefs.GetFloat("sfxVolume");
-            audioManager.masterAudioMixer.SetFloat("sfxVolume", sfxSliderValue);
+            sfxSliderValue = Mathf.Pow(10, (sfxSliderValue / 20));
+            audioManager.masterAudioMixer.SetFloat("sfxVolume", Mathf.Log(sfxSliderValue) * 20);
         }
         else
         {
             sfxSliderValue = sfxSlider.maxValue;
         }
+        Debug.Log("sfx slider" + sfxSliderValue);
         if(PlayerPrefs.HasKey("musicVolume"))
         {
             musicSliderValue = PlayerPrefs.GetFloat("musicVolume");
-            audioManager.masterAudioMixer.SetFloat("musicVolume", musicSliderValue);
+            musicSliderValue = Mathf.Pow(10, (musicSliderValue / 20));
+            audioManager.masterAudioMixer.SetFloat("musicVolume", Mathf.Log(musicSliderValue) * 20);
         }
         else
         {
             musicSliderValue = musicSlider.maxValue;
         }
+        Debug.Log(musicSliderValue);
         if(PlayerPrefs.HasKey("randomMode"))
         {
             randomMode = PlayerPrefs.GetString("randomMode");
@@ -142,6 +148,7 @@ public class UIManager : MonoBehaviour
         if(PlayerPrefs.HasKey("numPlayers"))
         {
             string numPlayerMode = PlayerPrefs.GetString("numPlayers");
+            Debug.Log("num players loaded from player prefs: " + numPlayerMode);
             if(numPlayerMode == "single")
             {
                 spawnTanks.singlePlayerEnabled = true;

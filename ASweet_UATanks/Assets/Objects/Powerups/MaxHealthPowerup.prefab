@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 5501202109923115934}
   - component: {fileID: 5501202109923115935}
   - component: {fileID: 5501202109923115932}
-  - component: {fileID: 2673519018672341453}
   - component: {fileID: 5892029426320494072}
+  - component: {fileID: 2673519018672341453}
   - component: {fileID: 7914505641795577642}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MaxHealthPowerup
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,6 +101,31 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &5892029426320494072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501202109923115933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4cc6682ec737c478405d1021f6e421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerup:
+    speedModifier: 0
+    damageModifier: 0
+    isHealthHeart: 1
+    fireRateModifier: 0
+    isArmorModifier: 0
+    duration: 5
+    isPermanent: 0
+  goodFeedback: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
+  badFeedback: {fileID: 8300000, guid: 7f45f3e7ead40e2419621de28678d0e5, type: 3}
+  audioSource: {fileID: 2673519018672341453}
+  tfRef: {fileID: 0}
+  isGoodPowerup: 1
 --- !u!82 &2673519018672341453
 AudioSource:
   m_ObjectHideFlags: 0
@@ -113,7 +138,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -197,31 +222,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5892029426320494072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5501202109923115933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc4cc6682ec737c478405d1021f6e421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerup:
-    speedModifier: 0
-    damageModifier: 0
-    isHealthHeart: 1
-    fireRateModifier: 0
-    isArmorModifier: 0
-    duration: 5
-    isPermanent: 0
-  goodFeedback: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
-  badFeedback: {fileID: 8300000, guid: 7f45f3e7ead40e2419621de28678d0e5, type: 3}
-  audioSource: {fileID: 2673519018672341453}
-  tfRef: {fileID: 0}
-  isGoodPowerup: 1
 --- !u!122 &7914505641795577642
 Halo:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 5501202111049506685}
   - component: {fileID: 5501202111049506674}
   - component: {fileID: 5501202111049506675}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

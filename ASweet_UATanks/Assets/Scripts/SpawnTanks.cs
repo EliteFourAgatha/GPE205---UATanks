@@ -14,11 +14,15 @@ public class SpawnTanks : MonoBehaviour
     public GameObject hunterAI;
     public GameObject cowardAI;
     public GameObject patrolAI;
+    public GameObject aiPatrolWaypoint;
     public List<GameObject> SpawnPoints;
-    private int randomSpawnIndex;
+    public List<Transform> GeneratedWaypoints;
+    private int randomSpawnIndexOne;
+    private int randomSpawnIndexTwo;
     public bool singlePlayerEnabled = true;
     public bool multiPlayerEnabled = false;
     public float playerRespawnTime = 2f;
+    public bool patrolAISpawned;
     public Camera playerOneGameCamera;
     public Camera playerTwoGameCamera;
 
@@ -51,13 +55,13 @@ public class SpawnTanks : MonoBehaviour
         {
             //Spawn player one
             //Get random spawn point from array, from 0 to length of list
-            randomSpawnIndex = UnityEngine.Random.Range(0, SpawnPoints.Count);
+            randomSpawnIndexOne = UnityEngine.Random.Range(0, SpawnPoints.Count);
 
             //Set player start position equal to random spawn point
-            Transform playerSpawn = SpawnPoints[randomSpawnIndex].transform;
-            playerOneTank.transform.position = playerSpawn.position;
+            Transform playerSpawn = SpawnPoints[randomSpawnIndexOne].transform;
+            playerOneTank.transform.position = playerSpawn.position + new Vector3(0, 0.5f, 0);
             //Remove current random index from list, avoid duplicate spawns
-            SpawnPoints.Remove(SpawnPoints[randomSpawnIndex]);
+            SpawnPoints.Remove(SpawnPoints[randomSpawnIndexOne]);
 
             //Return camera rect to default values to view entire screen
             playerOneGameCamera.rect = new Rect(0, 0, 1, 1);
@@ -70,21 +74,35 @@ public class SpawnTanks : MonoBehaviour
         {
             //Spawn player one
             //Get random spawn point from array, from 0 to length of list
-            randomSpawnIndex = UnityEngine.Random.Range(0, SpawnPoints.Count);
-            Debug.Log("p1 spawn" + randomSpawnIndex);
+            randomSpawnIndexOne = UnityEngine.Random.Range(0, SpawnPoints.Count);
+            Debug.Log("p1 spawn" + randomSpawnIndexOne);
 
             //Set player start position equal to random spawn point
-            Transform playerSpawn = SpawnPoints[randomSpawnIndex].transform;
-            playerOneTank.transform.position = playerSpawn.position;
+            Transform playerSpawn = SpawnPoints[randomSpawnIndexOne].transform;
+            playerOneTank.transform.position = playerSpawn.position + new Vector3(0, 0.5f, 0);
+            playerOneTank.SetActive(true);
+            SpawnPoints.Remove(SpawnPoints[randomSpawnIndexOne]);
 
             //Spawn player two
-            Debug.Log("p2 spawn:" + randomSpawnIndex);
-
+            randomSpawnIndexTwo = UnityEngine.Random.Range(0, SpawnPoints.Count);
+            if(randomSpawnIndexOne == randomSpawnIndexTwo)
+            {
+                if(randomSpawnIndexTwo > 0)
+                {
+                    randomSpawnIndexTwo --;
+                }
+                else
+                {
+                    randomSpawnIndexTwo ++;
+                }
+            }
             //Set player start position equal to random spawn point
-            Transform playerTwoSpawn = SpawnPoints[(randomSpawnIndex + 1)].transform;
-            playerTwoTank.transform.position = playerSpawn.position;
+            Transform playerTwoSpawn = SpawnPoints[randomSpawnIndexTwo].transform;
+            Debug.Log("p2 spawn:" + randomSpawnIndexTwo);
+            playerTwoTank.transform.position = playerSpawn.position + new Vector3(0, 0.5f, 0);
+            playerTwoTank.SetActive(true);
             //Remove current random index from list, avoid duplicate spawns
-            SpawnPoints.Remove(SpawnPoints[randomSpawnIndex]);
+            SpawnPoints.Remove(SpawnPoints[randomSpawnIndexTwo]);
 
             //Set camera values to split screen
             //(X, Y, Width, Height)
@@ -93,9 +111,6 @@ public class SpawnTanks : MonoBehaviour
 
             playerOneTank.GetComponent<InputController>().input = InputController.InputScheme.WASD;
             playerTwoTank.GetComponent<InputController>().input = InputController.InputScheme.arrowkeys;
-        
-            playerOneTank.SetActive(true);
-            playerTwoTank.SetActive(true);
         }
         
         //Iterate through all EnemyTanks in array. Get random index and set
@@ -104,9 +119,9 @@ public class SpawnTanks : MonoBehaviour
         foreach(Transform enemy in EnemyTanks)
         {
             i++;
-            randomSpawnIndex = UnityEngine.Random.Range(0, SpawnPoints.Count);
-            Debug.Log("Enemy" + i + " spawned at " + randomSpawnIndex);
-            Transform enemySpawn = SpawnPoints[randomSpawnIndex].transform;
+            randomSpawnIndexOne = UnityEngine.Random.Range(0, SpawnPoints.Count);
+            Debug.Log("Enemy" + i + " spawned at " + randomSpawnIndexOne);
+            Transform enemySpawn = SpawnPoints[randomSpawnIndexOne].transform;
             if(enemy.name == "BomberAI")
             {
                 bomberAI.transform.position = enemySpawn.position;
@@ -124,91 +139,106 @@ public class SpawnTanks : MonoBehaviour
             }
             else if(enemy.name == "PatrolAI")
             {
+                patrolAISpawned = false;
                 patrolAI.transform.position = enemySpawn.position;
+                ResetPatrolWaypoints();
+                SpawnWaypointsForPatroller(patrolAI.transform.position);
+                patrolAISpawned = true;
                 patrolAI.SetActive(true);
             }
-            SpawnPoints.Remove(SpawnPoints[randomSpawnIndex]);
+            SpawnPoints.Remove(SpawnPoints[randomSpawnIndexOne]);
         }
     }
 
     public void RespawnPlayer(int playerNum)
     {
-        StartCoroutine(WaitForRespawnTimer());
+        //StartCoroutine(WaitForRespawnTimer());
         //Find all gameobjects that are tank spawn points
         SpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("TankSpawnPoint"));
         //Get random spawn point from array, from 0 to length of list
-        randomSpawnIndex = UnityEngine.Random.Range(0, SpawnPoints.Count);
+        randomSpawnIndexOne = UnityEngine.Random.Range(0, SpawnPoints.Count);
 
         if(playerNum == 1)
         {
             //Set player start position equal to random spawn point
-            Transform playerSpawn = SpawnPoints[randomSpawnIndex].transform;
+            Transform playerSpawn = SpawnPoints[randomSpawnIndexOne].transform;
+            Debug.Log("p1 respawn point" + randomSpawnIndexOne);
             playerOneTank.transform.position = playerSpawn.position + new Vector3(0, 0.5f, 0);
             playerOneTank.SetActive(true);
         }
         else if(playerNum == 2)
         {
             //Set player start position equal to random spawn point
-            Transform playerSpawn = SpawnPoints[(randomSpawnIndex + 1)].transform;
-            playerTwoTank.transform.position = playerSpawn.position;
+            Transform playerSpawn = SpawnPoints[randomSpawnIndexOne].transform;
+            playerTwoTank.transform.position = playerSpawn.position + new Vector3(0, 0.5f, 0);
             playerTwoTank.SetActive(true);
         }
     }
     public void WaitAndRespawnEnemy(GameObject aiType)
     {
-        StartCoroutine(WaitForRespawnTimer());
-        UnityEngine.Random.InitState(DateTime.Now.Millisecond);
+        //StartCoroutine(WaitForRespawnTimer());
         //Find all gameobjects that are tank spawn points
         SpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("TankSpawnPoint"));
 
         //Get random spawn point from array, from 0 to length of list
-        randomSpawnIndex = UnityEngine.Random.Range(0, SpawnPoints.Count);
+        randomSpawnIndexOne = UnityEngine.Random.Range(0, SpawnPoints.Count);
 
-        //Set player start position equal to random spawn point
-        Transform enemySpawn = SpawnPoints[randomSpawnIndex].transform;
-        if(aiType == bomberAI)
+        //Set enemy start position equal to random spawn point
+        Transform enemySpawn = SpawnPoints[randomSpawnIndexOne].transform;
+        if(aiType.tag == "BomberAI")
         {
-            Debug.Log("respawning bomber ai");
-            bomberAI.transform.position = enemySpawn.position;
+            bomberAI.transform.position = enemySpawn.position + new Vector3(0, 0.5f, 0);
             bomberAI.SetActive(true);
+            Debug.Log("respawned bomber ai");
         }
         else if(aiType == cowardAI)
         {
             Debug.Log("respawning coward ai");
-            cowardAI.transform.position = enemySpawn.position;
+            cowardAI.transform.position = enemySpawn.position + new Vector3(0, 0.5f, 0);
             cowardAI.SetActive(true);
         }
         else if(aiType == hunterAI)
         {
             Debug.Log("respawning hunter ai");
-            hunterAI.transform.position = enemySpawn.position;
+            hunterAI.transform.position = enemySpawn.position + new Vector3(0, 0.5f, 0);
             hunterAI.SetActive(true);
         }  
         else if(aiType == patrolAI)
         {
+            patrolAISpawned = false;
             Debug.Log("respawning patrol ai");
-            patrolAI.transform.position = enemySpawn.position;
+            patrolAI.transform.position = enemySpawn.position + new Vector3(0, 0.5f, 0);
+            ResetPatrolWaypoints();
+            SpawnWaypointsForPatroller(patrolAI.transform.position);
+            patrolAISpawned = true;
             patrolAI.SetActive(true);
         }    
     }
-    /*
-    public void CheckForOverlap(Vector3 targetPos, Vector3 boxExtents, int playerNum)
-    {
-        Collider[] colliders = Physics.OverlapBox(targetPos, boxExtents);
-        for(int i = 0; i < colliders.Length; i++)
-        {
-            //If tank is currently in attempted spawn location, wait and try again
-            if(colliders[i].tag == "EnemyTank" || colliders[i].tag == "PlayerOneTank"
-                || colliders[i].tag == "PlayerTwoTank")
-            {
-                RespawnPlayer(playerNum);
-            }
-        }
-    }
-    */
-
     IEnumerator WaitForRespawnTimer()
     {
         yield return new WaitForSecondsRealtime(playerRespawnTime); 
+    }
+    //Spawn waypoints in the each of the corners of the room the Patrol AI is spawned in
+    public void SpawnWaypointsForPatroller(Vector3 patrolSpawnpoint)
+    {
+        //20, 20. -20, 20. -20, -20. 20, -20. values for corners of each room. 20 in each direction
+        GameObject waypointOne = Instantiate(aiPatrolWaypoint, patrolSpawnpoint + new Vector3(20, 0, 20), Quaternion.identity);
+        GameObject waypointTwo = Instantiate(aiPatrolWaypoint, patrolSpawnpoint + new Vector3(20, 0, -20), Quaternion.identity);
+        GameObject waypointThree = Instantiate(aiPatrolWaypoint, patrolSpawnpoint + new Vector3(-20, 0, -20), Quaternion.identity);
+        GameObject waypointFour = Instantiate(aiPatrolWaypoint, patrolSpawnpoint + new Vector3(-20, 0, 20), Quaternion.identity);      
+        
+        GeneratedWaypoints.Add(waypointOne.transform);
+        GeneratedWaypoints.Add(waypointTwo.transform);
+        GeneratedWaypoints.Add(waypointThree.transform);
+        GeneratedWaypoints.Add(waypointFour.transform);
+    }
+    //Find all waypoints and destroy them before spawning new ones
+    public void ResetPatrolWaypoints()
+    {
+        GameObject[] waypointArray = GameObject.FindGameObjectsWithTag("PatrolWaypoint");
+        foreach (GameObject waypoint in waypointArray)
+        {
+            Destroy(waypoint);
+        }
     }
 }

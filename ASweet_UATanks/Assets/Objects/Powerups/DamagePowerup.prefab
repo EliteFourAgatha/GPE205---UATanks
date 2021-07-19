@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5846993339686719205}
   - component: {fileID: 1584192134063764080}
   - component: {fileID: 1756333564655131984}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BombCap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 8519579203800854019}
   - component: {fileID: 6516230258698186239}
   - component: {fileID: 3249362620683911882}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BombShell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,9 +206,9 @@ GameObject:
   - component: {fileID: -3676185162187672746}
   - component: {fileID: -1225087130565933721}
   - component: {fileID: 8062742582237037426}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DamagePowerup
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,7 +280,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 871757127995118222}
   - component: {fileID: 8516330764890939126}
   - component: {fileID: 1824780659725114459}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BombTail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

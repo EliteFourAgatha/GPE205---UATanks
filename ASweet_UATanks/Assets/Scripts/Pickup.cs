@@ -35,12 +35,12 @@ public class Pickup : MonoBehaviour
 
             if(isGoodPowerup)
             {
-                AudioSource.PlayClipAtPoint(goodFeedback, tfRef.position, 1f);
+                AudioSource.PlayClipAtPoint(goodFeedback, tfRef.position, 0.5f);
                 powController.EnablePowerupRing();
             }
             else
             {
-                AudioSource.PlayClipAtPoint(badFeedback, tfRef.position, 1f);
+                AudioSource.PlayClipAtPoint(badFeedback, tfRef.position, 0.5f);
             }
         }
         //Destroy pickup object

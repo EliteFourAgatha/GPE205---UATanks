@@ -29,10 +29,6 @@ public class TankMotor : MonoBehaviour
         }
         characterController = gameObject.GetComponent<CharacterController>();
     }
-    private void Update() 
-    {
-        //if(RotateTowards)
-    }
     //Passing float speed, negative value is backwards
     public void MoveTank(float speed)
     {

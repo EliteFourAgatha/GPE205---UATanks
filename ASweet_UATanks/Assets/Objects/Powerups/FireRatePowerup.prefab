@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7620481015556983770}
   - component: {fileID: 7620481015556983769}
   - component: {fileID: 7620481015556983768}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce2d2ea77454e8d4b96b097a0615d9e4, type: 2}
+  - {fileID: 2100000, guid: dacd5ec81ab708d47917089d36610d68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 7620481015670020262}
   - component: {fileID: 7620481015670020261}
   - component: {fileID: 7620481015670020260}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce2d2ea77454e8d4b96b097a0615d9e4, type: 2}
+  - {fileID: 2100000, guid: dacd5ec81ab708d47917089d36610d68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 7620481015783574262}
   - component: {fileID: 7620481015783574261}
   - component: {fileID: 7620481015783574260}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce2d2ea77454e8d4b96b097a0615d9e4, type: 2}
+  - {fileID: 2100000, guid: dacd5ec81ab708d47917089d36610d68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 7620481016052450407}
   - component: {fileID: 7620481016052450406}
   - component: {fileID: 7620481016052450405}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce2d2ea77454e8d4b96b097a0615d9e4, type: 2}
+  - {fileID: 2100000, guid: dacd5ec81ab708d47917089d36610d68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -397,13 +397,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7620481016156772971}
-  - component: {fileID: 5683231197466875712}
   - component: {fileID: 3491874209920284566}
+  - component: {fileID: 5683231197466875712}
   - component: {fileID: 866417410508255756}
   - component: {fileID: -7672134936712342080}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FireRatePowerup
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -426,6 +426,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3491874209920284566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7620481016156772970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4cc6682ec737c478405d1021f6e421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerup:
+    speedModifier: 0
+    damageModifier: 0
+    isHealthHeart: 0
+    fireRateModifier: 2
+    isArmorModifier: 0
+    duration: 8
+    isPermanent: 0
+  goodFeedback: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
+  badFeedback: {fileID: 8300000, guid: 7f45f3e7ead40e2419621de28678d0e5, type: 3}
+  audioSource: {fileID: 5683231197466875712}
+  tfRef: {fileID: 0}
+  isGoodPowerup: 1
 --- !u!82 &5683231197466875712
 AudioSource:
   m_ObjectHideFlags: 0
@@ -438,7 +463,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -522,31 +547,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3491874209920284566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7620481016156772970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc4cc6682ec737c478405d1021f6e421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerup:
-    speedModifier: 0
-    damageModifier: 0
-    isHealthHeart: 0
-    fireRateModifier: 2
-    isArmorModifier: 0
-    duration: 8
-    isPermanent: 0
-  goodFeedback: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
-  badFeedback: {fileID: 8300000, guid: 7f45f3e7ead40e2419621de28678d0e5, type: 3}
-  audioSource: {fileID: 5683231197466875712}
-  tfRef: {fileID: 0}
-  isGoodPowerup: 1
 --- !u!65 &866417410508255756
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -559,7 +559,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 1}
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Center: {x: 0, y: 0.2, z: -0.2}
 --- !u!122 &-7672134936712342080
 Halo:
   m_ObjectHideFlags: 0

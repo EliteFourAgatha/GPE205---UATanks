@@ -625,7 +625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trfRef: {fileID: 0}
-  maxHealth: 0
+  maxHealth: 25
   currentHealth: 0
   lifeManager: {fileID: 0}
   gameManager: {fileID: 0}
@@ -636,6 +636,7 @@ MonoBehaviour:
   explosionVFX: {fileID: 263806095189928864, guid: 98e6c830d2072ea49aed0ddebf980348, type: 3}
   tankData: {fileID: 1906290122698090979}
   canTakeDamage: 0
+  canDestroy: 0
 --- !u!114 &1906290122437613159
 MonoBehaviour:
   m_ObjectHideFlags: 0

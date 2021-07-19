@@ -21,6 +21,7 @@ public class TankHealth : MonoBehaviour
     public GameObject explosionVFX;
     public TankData tankData;
     public bool canTakeDamage;
+    public bool canDestroy;
     void Start()
     {
         //If tank data isn't set in inspector, set it with GetComponent
@@ -41,11 +42,13 @@ public class TankHealth : MonoBehaviour
         currentHealth = maxHealth;
         //Cantakedamage is true on start
         canTakeDamage = true;
+        canDestroy = true;
     }
     void Update()
     {
-        if(currentHealth <= 0)
+        if(currentHealth <= 0) // && canDestroy == true... necessary??
         {
+            Debug.Log("Destroyed tank, less than 0 hp");
             DestroyTank();
         }
     }
@@ -61,31 +64,39 @@ public class TankHealth : MonoBehaviour
         audioSource.clip = explosionSFX;
         if(gameObject != null)
         {
-            AudioSource.PlayClipAtPoint(explosionSFX, trfRef.position);
+            AudioSource.PlayClipAtPoint(explosionSFX, trfRef.position, 0.5f);
         }
         audioSource.clip = fireShellSFX;
         Instantiate(explosionVFX, trfRef.position, Quaternion.identity);
         if(gameObject.tag == "PlayerOneTank")
         {
             lifeManager.DecreasePlayerLife(1);
+            //canDestroy = false;
             gameObject.SetActive(false);
         }
         else if(gameObject.tag == "PlayerTwoTank")
         {
             lifeManager.DecreasePlayerLife(2);
+            //canDestroy = false;
             gameObject.SetActive(false);
         }
         else
         {
-            currentHealth = maxHealth;
             spawnTanks.WaitAndRespawnEnemy(gameObject);
+            ResetHealth();
+            //canDestroy = false;
             gameObject.SetActive(false);
         }
+    }
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
     }
     //Call onenable when gameobject setactive(true). Use to reset health to maximum
     public void OnEnable() 
     {
-        Debug.Log("reset health of " + gameObject);
-        currentHealth = maxHealth;
+        ResetHealth();
+        canDestroy = true;
+        Debug.Log("can destroy = true");
     }
 }

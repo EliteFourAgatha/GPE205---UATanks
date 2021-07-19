@@ -7,13 +7,14 @@ public class ShellScript : MonoBehaviour
     private float startTime;
     //How long to wait to destroy shell if it hasn't collided already
     //  Guarantees it won't linger in game world
+    [Range (1, 3)]
     private float destroyTimer = 3f;
     public ScoreManager scoreManager;
     public ParticleSystem roundExplodeVFX;
     public GameObject aoeField;
     public AudioSource audioSource;
     public AudioClip tankHitSFX;
-    public enum TankThatFiredShell{enemy, playerOne, playerTwo};
+    public enum TankThatFiredShell{bomberAI, enemy, playerOne, playerTwo};
     public TankThatFiredShell tankThatFiredShell;
     void Start()
     {
@@ -38,14 +39,14 @@ public class ShellScript : MonoBehaviour
     {
         ParticleSystem roundExplosion;
         //If object collided with is Enemy tank, do (data.playerShellDamage) damage
-        if(collision.gameObject.tag == "EnemyTank")
+        if(collision.gameObject.tag == "EnemyTank" || collision.gameObject.tag == "BomberAI")
         {
             TankHealth tankHealth = collision.gameObject.GetComponent<TankHealth>();
             tankHealth.DamageTank();
             roundExplosion = Instantiate(roundExplodeVFX, collision.transform.position, Quaternion.Euler(0, 0, 0));
             if(gameObject != null)
             {
-                AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
+                AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position, 0.5f);
             }
             if(tankThatFiredShell == TankThatFiredShell.playerOne)
             {
@@ -65,7 +66,7 @@ public class ShellScript : MonoBehaviour
             roundExplosion = Instantiate(roundExplodeVFX, collision.transform.position, Quaternion.Euler(0, 0, 0));
             if(gameObject != null)
             {
-                AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position);
+                AudioSource.PlayClipAtPoint(tankHitSFX, collision.gameObject.transform.position, 0.5f);
             }
             if(tankThatFiredShell == TankThatFiredShell.playerOne)
             {
@@ -77,11 +78,15 @@ public class ShellScript : MonoBehaviour
             }
                 Destroy(gameObject);
         }
-        //If bomb collides with wall or ground...
-        //  Instantiate AOE field
+        //If bomb collides with wall or ground..
         else
         {
-            Instantiate(aoeField, collision.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            //If tank that fired was bomber AI...
+            if(tankThatFiredShell == TankThatFiredShell.bomberAI)
+            {
+                //Spawn aoe field at collision point
+                Instantiate(aoeField, gameObject.transform.position + new Vector3(0, -0.65f, 0), Quaternion.identity);
+            }
             Destroy(gameObject);
         }
     }

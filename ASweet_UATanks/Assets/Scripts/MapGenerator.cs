@@ -9,6 +9,7 @@ public class MapGenerator : MonoBehaviour
     public int columns;
     private float roomWidth = 50f;
     private float roomHeight = 50f;
+    public Game_Manager gameManager;
     public SpawnTanks spawnTanks;
     public GameObject tankSpawnPoint;
     public GameObject aiPatrolWaypoint;
@@ -29,6 +30,7 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         spawnTanks = gameObject.GetComponent<SpawnTanks>();
+        gameManager = gameObject.GetComponent<Game_Manager>();
         if(randomSpawnType == RandomSpawnType.mapOfDay)
         {
             //Use DateTime and call current date
@@ -90,14 +92,8 @@ public class MapGenerator : MonoBehaviour
                 //Set tank spawn point at (0,0,0) value of each room
                 Instantiate(tankSpawnPoint, newPosition, Quaternion.identity);
 
-                //Set AI Patrol waypoint at (0,0,0) value of each room
-                GameObject waypoint = Instantiate(aiPatrolWaypoint, newPosition, Quaternion.identity);
-
                 //Set power up spawn point to (0,0,5) units ahead of tank start point
-                Instantiate(powerupSpawner, newPosition + Vector3.forward * 3f, Quaternion.identity);
-
-                //Add generated waypoints to list. Feeds waypoint array for AIPatrol script.
-                generatedWaypoints.Add(waypoint.transform);
+                Instantiate(powerupSpawner, newPosition + Vector3.forward * 3f, Quaternion.identity);              
 
                 //Open doors depending on room's location (rows)
                 if(i == 0)
@@ -149,7 +145,28 @@ public class MapGenerator : MonoBehaviour
         }
         gridGenerated = true;
     }
-
+    public void DestroyGrid()
+    {
+        foreach (GameObject powerupSpawner in gameManager.powerupSpawnerArray)
+        {
+            Destroy(powerupSpawner);
+        }
+        GameObject[] TankSpawnPoints = GameObject.FindGameObjectsWithTag("TankSpawnPoint");
+        foreach (GameObject spawnPoint in TankSpawnPoints)
+        {
+            Destroy(spawnPoint);
+        }
+        GameObject[] roomArray = GameObject.FindGameObjectsWithTag("Room");
+        foreach (GameObject room in roomArray)
+        {
+            Destroy(room);
+        }
+        GameObject[] activePowerupArray = GameObject.FindGameObjectsWithTag("Powerup");
+        foreach (GameObject powerup in activePowerupArray)
+        {
+            Destroy(powerup);
+        }
+    }
     public int DateToInt(DateTime dateUsed)
     {
         //Add up current date and return as integer

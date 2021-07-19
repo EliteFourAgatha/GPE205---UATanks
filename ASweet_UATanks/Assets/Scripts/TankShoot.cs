@@ -83,6 +83,12 @@ public class TankShoot : MonoBehaviour
             playerTwoFiredShell = true;
             StartCoroutine(DisableFiredShellBool());
         }
+        else if(gameObject.tag == "BomberAI")
+        {
+            ShellScript shellScript = shell.GetComponent<ShellScript>();
+            shellScript.tankThatFiredShell = ShellScript.TankThatFiredShell.bomberAI;
+            StartCoroutine(DisableFiredShellBool());
+        }
         //Use AddForce to move shell in direction tank is currently facing (forward)
         //  ForceMode.Impulse applies instant force
         shell.AddForce(firePointTF.forward * data.shellSpeed, ForceMode.Impulse);

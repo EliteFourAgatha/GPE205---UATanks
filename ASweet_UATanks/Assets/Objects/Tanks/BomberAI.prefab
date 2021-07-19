@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: -6562796123281016034}
   m_Layer: 0
   m_Name: BomberAI
-  m_TagString: EnemyTank
+  m_TagString: BomberAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

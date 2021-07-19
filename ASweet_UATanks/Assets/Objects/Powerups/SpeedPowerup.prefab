@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 2270810852238618410}
   - component: {fileID: 1658491909981463570}
   - component: {fileID: 1644404960232749719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SpeedPowerup
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,7 +164,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5226595583084848290, guid: 1dce51887a19d3f4d9f4de9bbbe7315b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a66e653814647547928f27eda46c23d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0

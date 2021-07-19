@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq; //Using Concat to combine arrays
 
 public class Game_Manager : MonoBehaviour
 {
@@ -23,7 +24,9 @@ public class Game_Manager : MonoBehaviour
     public LifeManager lifeManager;
     public ScoreManager scoreManager;
     public GameObject[] powerupSpawnerArray;
-    public GameObject[] activeAIArray;
+    private GameObject[] aiArray;
+    private GameObject[] bomberAIArray;
+    public GameObject[] allActiveAIArray;
     public bool playerOneFiredShellRef = false;
     public bool playerTwoFiredShellRef = false;
 
@@ -75,13 +78,14 @@ public class Game_Manager : MonoBehaviour
         startMenu.SetActive(false);
         gameOverUI.SetActive(false);
         Time.timeScale = 1f;
+        mapGenerator.DestroyGrid();
         //Generate grid before game can start
         mapGenerator.GenerateGrid();
         //If grid is generated (spawnpoint objects exist, can search)
         if(mapGenerator.gridGenerated)
         {
             //Reset game state (single player)
-            if(spawnTanks.singlePlayerEnabled)
+            if(PlayerPrefs.GetString("numPlayers") == "single")
             {
                 lifeManager.ResetLives(1);
                 lifeManager.EnableLivesText(1);
@@ -90,7 +94,7 @@ public class Game_Manager : MonoBehaviour
                 spawnTanks.SpawnAtRandomSpawnpoint();
             }
             //Reset game state (multi player)
-            else if(spawnTanks.multiPlayerEnabled)
+            else if(PlayerPrefs.GetString("numPlayers") == "multi")
             {
                 lifeManager.ResetLives(1);
                 lifeManager.ResetLives(2);
@@ -102,7 +106,9 @@ public class Game_Manager : MonoBehaviour
             powerupSpawnerArray = GameObject.FindGameObjectsWithTag("PowerupSpawner");
             audioManager.EnableGameMusic();
             scoreManager.ChangeHighScoreToStatus(true);
-            activeAIArray = GameObject.FindGameObjectsWithTag("EnemyTank");
+            aiArray = GameObject.FindGameObjectsWithTag("EnemyTank");
+            bomberAIArray = GameObject.FindGameObjectsWithTag("BomberAI");
+            allActiveAIArray = aiArray.Concat(bomberAIArray).ToArray();
         }
     }
     public void OnApplicationQuit() 

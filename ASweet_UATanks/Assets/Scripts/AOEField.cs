@@ -5,14 +5,14 @@ using UnityEngine;
 public class AOEField : MonoBehaviour
 {
     public float scrollSpeed = 0.1f;
-    Renderer renderer;
+    Renderer lavaRenderer;
     public float aoeDuration = 3f;
     public float tickRate = 1f;
     private float startTime;
 
     void Start()
     {
-        renderer = gameObject.GetComponent<Renderer>();
+        lavaRenderer = gameObject.GetComponent<Renderer>();
         startTime = Time.time;
     }
     void Update()
@@ -24,7 +24,7 @@ public class AOEField : MonoBehaviour
     public void PanTexture()
     {
         float moveSpeed = Time.time * scrollSpeed;
-        renderer.material.SetTextureOffset("_MainTex", new Vector2(0, moveSpeed));
+        lavaRenderer.material.SetTextureOffset("_MainTex", new Vector2(0, moveSpeed));
     }
     //If either player tank enters aoe zone, do damage at (tickrate) interval
     public void OnTriggerStay(Collider other)
@@ -33,7 +33,6 @@ public class AOEField : MonoBehaviour
         {
             TankHealth health = other.gameObject.GetComponent<TankHealth>();
             health.currentHealth -= tickRate * Time.deltaTime;
-            Debug.Log("P1 health on aoe... " + health.currentHealth);
         }
         else if(other.gameObject.tag == "PlayerTwoTank")
         {

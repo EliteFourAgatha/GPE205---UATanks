@@ -21,6 +21,7 @@ public class AIPatrol : MonoBehaviour
     public Armor armor;
     public Game_Manager gameManager;
     public MapGenerator mapGenerator;
+    public SpawnTanks spawnTanks;
     private int avoidanceStage = 0;
     public float avoidanceTime = 2f;
     //Exit time for obstacle avoidance
@@ -29,6 +30,7 @@ public class AIPatrol : MonoBehaviour
     public enum AIState{patrol, chaseandshoot, chase, checkflee, flee, rest};
     public AIState aiState = AIState.patrol;
     public float stateEnterTime;
+    [Range (5, 20)]
     public float aiSenseRadius = 10f;
     //Distance player must be away for AIPatrol to stop chasing
     public float patrolChaseRadius = 5f;
@@ -75,14 +77,20 @@ public class AIPatrol : MonoBehaviour
         {
             mapGenerator = gameManager.GetComponent<MapGenerator>();
         }
+        if(spawnTanks == null)
+        {
+            spawnTanks = gameManager.GetComponent<SpawnTanks>();
+        }
     }
     void Update()
     {
         target = ChooseTargetByProximity();
         if(mapGenerator.gridGenerated)
         {
-            aiState = AIState.flee;
-            GetWaypointArray(mapGenerator.generatedWaypoints);
+            if(spawnTanks.patrolAISpawned)
+            {
+                GetWaypointArray(spawnTanks.GeneratedWaypoints);
+            }
         }
         if(aiState == AIState.chase)
         {
@@ -102,7 +110,6 @@ public class AIPatrol : MonoBehaviour
             }
             else if(Vector3.SqrMagnitude(tfRef.position - target.position) >= (patrolChaseRadius * patrolChaseRadius))
             {
-                Debug.Log("chase+fire -> patrol");
                 SetCurrentWaypoint();
                 ChangeState(AIState.patrol);
             }
@@ -131,7 +138,6 @@ public class AIPatrol : MonoBehaviour
             }
             else if(Vector3.SqrMagnitude(tfRef.position - target.position) >= (patrolChaseRadius * patrolChaseRadius))
             {
-                Debug.Log("chase+fire -> patrol");
                 SetCurrentWaypoint();
                 ChangeState(AIState.patrol);
             }
@@ -164,7 +170,6 @@ public class AIPatrol : MonoBehaviour
             {
                 if(hit.collider.CompareTag("PlayerOneTank") || hit.collider.CompareTag("PlayerTwoTank"))
                 {
-                    Debug.Log("Patrol -> chaseandshoot");
                     ChangeState(AIState.chaseandshoot);
                 }
             }
@@ -215,12 +220,10 @@ public class AIPatrol : MonoBehaviour
         else if(aiState == AIState.rest)
         {
             //Do behaviors
-            Debug.Log("Rest enabled");
             DoRest();
             //Check for transitions
             if(Vector3.SqrMagnitude(tfRef.position - target.position) <= (aiSenseRadius * aiSenseRadius))
             {
-                Debug.Log("Rest -> flee");
                 ChangeState(AIState.flee);
             }
             else if(health.currentHealth >= health.maxHealth)
@@ -363,22 +366,10 @@ public class AIPatrol : MonoBehaviour
             }
         }
         //closestWP = currentWP;
-        Debug.Log("CurrentWP: " + currentWP);
     }
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // Need to add to DoPatrol AI so that the tank actually follows patrol route, instead of
-    //  running mindlessly into walls which is happening currently
     public void DoPatrol()
     {
+        Debug.Log("current waypoint: " + waypoints[currentWP]);
         //If tank is unable to rotate, (RotateTowards = false), rotate tank
         if (motor.RotateTowardsWP(waypoints[currentWP].position, data.turnSpeed) == false)
         {
@@ -390,7 +381,6 @@ public class AIPatrol : MonoBehaviour
         //  Use Sqr Magnitude to get square root of equation
         if(Vector3.SqrMagnitude(waypoints[currentWP].position - tfRef.position) < (closeEnoughToWP * closeEnoughToWP))
         {
-            Debug.Log("Hit waypoint, going next");
             hitWaypoint = true;
             if(isPatrolForward == true)
             {
@@ -423,7 +413,6 @@ public class AIPatrol : MonoBehaviour
                 }
             }
         }
-        Debug.Log("current waypoint in patrol loop" + currentWP);
     }
     public void ChangeState(AIState newState)
     {
@@ -450,7 +439,6 @@ public class AIPatrol : MonoBehaviour
             }
             else
             {
-                Debug.Log("player 1 null, player 2 target");
                 //Player one dead / null, new target is player 2
                 return playerTwoRef.transform;
             }
@@ -463,7 +451,6 @@ public class AIPatrol : MonoBehaviour
             }
             else
             {
-                Debug.Log("player 2 null, player 1 target");
                 //Player two dead / null, new target is player 1
                 return playerOneRef.transform;
 
