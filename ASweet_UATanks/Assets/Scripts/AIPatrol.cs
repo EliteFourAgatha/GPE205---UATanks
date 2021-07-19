@@ -162,9 +162,6 @@ public class AIPatrol : MonoBehaviour
             {
                 ChangeState(AIState.checkflee);
             }
-            //if player enters spotlight collider or short raycast forward, change state
-            //filler
-            //filler code until spotlight set up
             RaycastHit hit;
             if(Physics.Raycast(tfRef.position, tfRef.forward, out hit, 10f))
             {

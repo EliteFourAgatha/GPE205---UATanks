@@ -33,6 +33,7 @@ public class AOEField : MonoBehaviour
         {
             TankHealth health = other.gameObject.GetComponent<TankHealth>();
             health.currentHealth -= tickRate * Time.deltaTime;
+            Debug.Log(health.currentHealth);
         }
         else if(other.gameObject.tag == "PlayerTwoTank")
         {

@@ -111,7 +111,6 @@ public class UIManager : MonoBehaviour
         {
             sfxSliderValue = sfxSlider.maxValue;
         }
-        Debug.Log("sfx slider" + sfxSliderValue);
         if(PlayerPrefs.HasKey("musicVolume"))
         {
             musicSliderValue = PlayerPrefs.GetFloat("musicVolume");
@@ -122,7 +121,6 @@ public class UIManager : MonoBehaviour
         {
             musicSliderValue = musicSlider.maxValue;
         }
-        Debug.Log(musicSliderValue);
         if(PlayerPrefs.HasKey("randomMode"))
         {
             randomMode = PlayerPrefs.GetString("randomMode");

@@ -324,7 +324,6 @@
 "Assets/Scripts/InputController.cs"
 "Assets/Scripts/LifeManager.cs"
 "Assets/Scripts/MapGenerator.cs"
-"Assets/Scripts/MoveTexture.cs"
 "Assets/Scripts/Pickup.cs"
 "Assets/Scripts/Powerup.cs"
 "Assets/Scripts/PowerupController.cs"
